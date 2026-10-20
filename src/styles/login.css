@@ -1,31 +1,133 @@
+
+/* Configurações gerais */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #e8f0f5, #f8fafc);
+    color: #1e293b;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Área principal do login */
+
+main {
+    width: 100%;
+    max-width: 420px;
+    padding: 40px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.10);
+}
+
+/* Títulos */
+
 h1 {
-    color:blue;
-    text-align:center;
+    color: #155e75;
+    text-align: center;
+    font-size: 42px;
+    margin: 0 0 10px;
 }
 
 h2 {
-    text-align:center;
+    color: #334155;
+    text-align: center;
+    font-size: 22px;
+    margin: 0 0 30px;
 }
 
-form{
-    width: 320px;
-    margin: 0 auto;
-    border: 1px solid gray;
-    padding: 20px;
-    border-radius: 15px;
+/* Formulário */
+
+form {
+    width: 100%;
 }
 
-input{
+form div {
+    margin-bottom: 18px;
+}
+
+label {
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 14px;
 }
 
-button{
-    color: white;
-    background-color: green;
+/* Campos de usuário e senha */
+
+input {
+    display: block;
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #cbd5e1;
     border-radius: 8px;
+    font-size: 16px;
+    background-color: #ffffff;
 }
 
-p{
-    text-align:center;
+input:focus {
+    outline: 2px solid #155e75;
+    outline-offset: 1px;
+}
+
+/* Botão Entrar */
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 8px;
+
+    background-color: #155e75;
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0e4456;
+}
+
+/* Link de cadastro */
+
+p {
+    text-align: center;
+    margin: 24px 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+a {
+    color: #155e75;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Adaptação para celulares */
+
+@media (max-width: 480px) {
+    main {
+        padding: 28px 22px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
 }

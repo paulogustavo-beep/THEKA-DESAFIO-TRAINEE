@@ -1,12 +1,14 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="login.css">
+    <title>Theka - Login</title>
+    <link rel="stylesheet" href="../styles/login.css">
 </head>
 <body>
+
     <main>
         <h1>Theka</h1>
         <h2>Entrar</h2>
@@ -14,19 +16,34 @@
         <form>
             <div>
                 <label for="usuario">Usuário</label>
-                <input type="text" id="usuario" name="usuario">
+                <input
+                    type="text"
+                    id="usuario"
+                    name="usuario"
+                    autocomplete="username"
+                    required
+                >
             </div>
+
             <div>
                 <label for="senha">Senha</label>
-                <input type="password" id="senha" name="senha">
+                <input
+                    type="password"
+                    id="senha"
+                    name="senha"
+                    autocomplete="current-password"
+                    required
+                >
             </div>
+
             <button type="button">Entrar</button>
         </form>
+
         <p>
             Não tem uma conta?
-            <a href="cadastro.html">Cadastre-se</a> 
+            <a href="cadastro.html">Cadastre-se</a>
         </p>
     </main>
-    
+
 </body>
 </html>
