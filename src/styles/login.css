@@ -1,133 +1,294 @@
 
-/* Configurações gerais */
+/* Paleta de cores da Theka */
+:root {
+    --marrom: #8c490d;
+    --laranja: #f78520;
+    --laranja-escuro: #da6b13;
+    --branco: #ffffff;
+}
 
+/* Configurações gerais */
 * {
     box-sizing: border-box;
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--marrom);
+}
+
+/* Estrutura principal da página */
+.login-page {
+    display: grid;
+    grid-template-columns: 58.5% 41.5%;
     min-height: 100vh;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #e8f0f5, #f8fafc);
-    color: #1e293b;
+    min-height: 100dvh;
+}
 
+/* Área da ilustração */
+.brand-panel {
+    position: relative;
+    overflow: hidden;
+    background: var(--marrom);
+}
+
+.brand-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.brand-art-mobile {
+    display: none;
+}
+
+.brand-logo {
+    position: absolute;
+    left: 9.7%;
+    bottom: 3%;
+    display: block;
+    width: 27%;
+    height: auto;
+}
+
+/* Área branca do formulário */
+.login-panel {
+    position: relative;
     display: flex;
-    justify-content: center;
     align-items: center;
+    background: var(--branco);
+    border-radius: 24px 0 0 24px;
 }
 
-/* Área principal do login */
-
-main {
-    width: 100%;
-    max-width: 420px;
-    padding: 40px;
-    background-color: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 18px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.10);
+.login-content {
+    width: 64%;
+    max-width: 400px;
+    margin-left: 9.5%;
+    padding: 36px 0;
+    transform: translateY(-46px);
 }
 
-/* Títulos */
-
+/* Título */
 h1 {
-    color: #155e75;
-    text-align: center;
-    font-size: 42px;
-    margin: 0 0 10px;
+    margin: 0 0 91px;
+    color: var(--laranja);
+    font-size: clamp(34px, 3.6vw, 52px);
+    line-height: 1.15;
+    letter-spacing: -0.04em;
 }
 
-h2 {
-    color: #334155;
-    text-align: center;
-    font-size: 22px;
-    margin: 0 0 30px;
-}
-
-/* Formulário */
-
-form {
-    width: 100%;
-}
-
-form div {
-    margin-bottom: 18px;
+/* Campos do formulário */
+.field + .field {
+    margin-top: 31px;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    font-size: 14px;
+    margin-bottom: 5px;
+    color: var(--laranja);
+    font-size: clamp(14px, 1.25vw, 18px);
+    font-weight: 700;
 }
-
-/* Campos de usuário e senha */
 
 input {
-    display: block;
     width: 100%;
-    padding: 13px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 16px;
-    background-color: #ffffff;
+    min-width: 0;
+    height: 37px;
+    padding: 0 14px;
+    border: 2px solid var(--laranja);
+    border-radius: 999px;
+    background: var(--branco);
+    font: inherit;
+    font-size: 13px;
+    outline: none;
 }
 
-input:focus {
-    outline: 2px solid #155e75;
-    outline-offset: 1px;
+input::placeholder {
+    color: #e6a275;
+    opacity: 1;
 }
 
-/* Botão Entrar */
+input:focus-visible {
+    border-color: var(--laranja-escuro);
+    box-shadow: 0 0 0 3px rgba(247, 133, 32, .16);
+}
 
-button {
+/* Campo de senha */
+.password-control {
+    position: relative;
+}
+
+.password-control input {
+    padding-right: 44px;
+}
+
+.password-eye {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    display: flex;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-50%);
+    color: var(--laranja);
+    pointer-events: none;
+}
+
+.password-eye svg {
     width: 100%;
-    padding: 14px;
-    margin-top: 8px;
-    border: none;
-    border-radius: 8px;
-
-    background-color: #155e75;
-    color: white;
-
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+    height: 100%;
 }
 
-button:hover {
-    background-color: #0e4456;
+/* Links de recuperação e cadastro */
+.login-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 40px;
 }
 
-/* Link de cadastro */
-
-p {
+.login-links a {
+    color: var(--laranja);
+    font-size: clamp(12px, 1.05vw, 15px);
     text-align: center;
-    margin: 24px 0 0;
-    font-size: 14px;
-    color: #64748b;
-}
-
-a {
-    color: #155e75;
-    font-weight: bold;
     text-decoration: none;
 }
 
-a:hover {
+.login-links a:hover {
     text-decoration: underline;
 }
 
-/* Adaptação para celulares */
+.login-links a:focus-visible,
+.login-button:focus-visible {
+    outline: 3px solid var(--laranja-escuro);
+    outline-offset: 4px;
+}
 
-@media (max-width: 480px) {
-    main {
-        padding: 28px 22px;
+/* Botão Entrar — CENTRALIZADO */
+.login-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.login-button {
+    min-height: 37px;
+    padding: 8px 21px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--laranja);
+    color: var(--branco);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background: var(--laranja-escuro);
+}
+
+/* Responsividade para celulares */
+@media (max-width: 800px) {
+
+    .login-page {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .brand-panel {
+        flex: none;
+        height: 40.6dvh;
+        min-height: 230px;
+        max-height: 440px;
+    }
+
+    .brand-art-desktop,
+    .brand-logo {
+        display: none;
+    }
+
+    .brand-art-mobile {
+        display: block;
+    }
+
+    .login-panel {
+        flex: 1;
+        display: block;
+        margin-top: -16px;
+        border-radius: 24px 24px 0 0;
+    }
+
+    .login-content {
+        width: 100%;
+        max-width: 510px;
+        margin: 0 auto;
+        padding: 34px 16px 70px;
+        transform: none;
     }
 
     h1 {
-        font-size: 36px;
+        margin-bottom: 42px;
+        font-size: 32px;
+    }
+
+    .field + .field {
+        margin-top: 18px;
+    }
+
+    label {
+        font-size: 17px;
+    }
+
+    input {
+        height: 43px;
+        font-size: 14px;
+    }
+
+    .login-links {
+        margin-top: 52px;
+        gap: 21px;
+    }
+
+    .login-links a {
+        font-size: 14px;
+    }
+
+    .login-actions {
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .login-button {
+        min-height: 40px;
+    }
+}
+
+/* Celulares pequenos */
+@media (max-width: 360px) {
+
+    .brand-panel {
+        min-height: 190px;
+    }
+
+    .login-content {
+        padding: 25px 17px 45px;
+    }
+
+    h1 {
+        margin-bottom: 32px;
+        font-size: 28px;
+    }
+
+    .login-links {
+        margin-top: 25px;
     }
 }
