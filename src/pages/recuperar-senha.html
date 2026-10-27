@@ -1,0 +1,27 @@
+
+<script>
+    // Selecionar os elementos do HTML
+    const formulario = document.querySelector('#form-recuperacao');
+    const campoEmail = document.querySelector('#email');
+    const aviso = document.querySelector('#aviso');
+
+    // Quando o usuário clicar em Enviar link
+    formulario.addEventListener('submit', function(evento) {
+
+        // Impedir que a página recarregue
+        evento.preventDefault();
+
+        // Retirar espaços desnecessários
+        campoEmail.value = campoEmail.value.trim();
+
+        // Conferir se o e-mail foi preenchido corretamente
+        if (!formulario.reportValidity()) {
+            return;
+        }
+
+        // Funcionalidade de envio ainda não finalizada
+        aviso.textContent = 'A recuperação de senha ainda não está disponível.';
+        aviso.hidden = false;
+
+    });
+</script>

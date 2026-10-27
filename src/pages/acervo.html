@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acervo | Theka</title>
+
+    <style>
+        :root {
+            --marrom: #8c490d;
+            --laranja: #f78520;
+            --creme: #fff8f0;
+            --texto: #392414;
+            --branco: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--texto);
+            background: var(--creme);
+        }
+
+        .cabecalho {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 18px 7%;
+            background: var(--marrom);
+        }
+
+        .logo {
+            color: var(--laranja);
+            font-size: 32px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .menu a {
+            color: var(--branco);
+            font-size: 15px;
+            text-decoration: none;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .banner {
+            padding: 70px 7%;
+            background: #f6dfc6;
+        }
+
+        .banner-conteudo {
+            max-width: 650px;
+        }
+
+        .banner h1 {
+            margin: 0 0 15px;
+            color: var(--marrom);
+            font-size: clamp(32px, 5vw, 56px);
+        }
+
+        .banner p {
+            max-width: 550px;
+            margin: 0;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .livros {
+            padding: 48px 7% 75px;
+        }
+
+        .livros h2 {
+            margin: 0 0 26px;
+            color: var(--marrom);
+            font-size: 28px;
+        }
+
+        .grade-livros {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .livro {
+            padding: 18px;
+            border: 1px solid #efd9c4;
+            border-radius: 14px;
+            background: var(--branco);
+        }
+
+        .capa {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            padding: 20px;
+            border-radius: 8px;
+            color: var(--branco);
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .capa-1 {
+            background: #7d4018;
+        }
+
+        .capa-2 {
+            background: #c56c21;
+        }
+
+        .capa-3 {
+            background: #405a50;
+        }
+
+        .livro h3 {
+            margin: 16px 0 7px;
+            font-size: 20px;
+        }
+
+        .livro p {
+            margin: 0;
+            color: #725a49;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            .grade-livros {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cabecalho {
+                flex-wrap: wrap;
+                padding: 16px 6%;
+            }
+
+            .logo {
+                font-size: 28px;
+            }
+
+            .menu {
+                gap: 16px;
+            }
+
+            .banner {
+                padding: 48px 6%;
+            }
+
+            .banner h1 {
+                font-size: 34px;
+            }
+
+            .banner p {
+                font-size: 15px;
+            }
+
+            .livros {
+                padding: 35px 6% 55px;
+            }
+
+            .livros h2 {
+                font-size: 25px;
+            }
+
+            .grade-livros {
+                grid-template-columns: 1fr;
+            }
+
+            .capa {
+                min-height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="cabecalho">
+
+        <a class="logo" href="acervo.html">
+            Theka
+        </a>
+
+        <nav class="menu" aria-label="Navegação principal">
+            <a href="#livros">Acervo</a>
+            <a href="login.html">Login</a>
+        </nav>
+
+    </header>
+
+    <main>
+
+        <section class="banner">
+
+            <div class="banner-conteudo">
+
+                <h1>Explore nosso acervo</h1>
+
+                <p>
+                    Descubra histórias, autores e novas leituras
+                    em um só lugar.
+                </p>
+
+            </div>
+
+        </section>
+
+        <section class="livros" id="livros">
+
+            <h2>Livros em destaque</h2>
+
+            <div class="grade-livros">
+
+                <article class="livro">
+
+                    <div class="capa capa-1">
+                        Dom Casmurro
+                    </div>
+
+                    <h3>Dom Casmurro</h3>
+
+                    <p>Machado de Assis</p>
+
+                </article>
+
+                <article class="livro">
+
+                    <div class="capa capa-2">
+                        O Cortiço
+                    </div>
+
+                    <h3>O Cortiço</h3>
+
+                    <p>Aluísio Azevedo</p>
+
+                </article>
+
+                <article class="livro">
+
+                    <div class="capa capa-3">
+                        Vidas Secas
+                    </div>
+
+                    <h3>Vidas Secas</h3>
+
+                    <p>Graciliano Ramos</p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

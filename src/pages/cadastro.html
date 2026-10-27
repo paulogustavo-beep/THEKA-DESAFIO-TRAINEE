@@ -8,7 +8,6 @@
     <title>Cadastro | Theka</title>
 
     <style>
-        /* CORES DO THEKA */
         :root {
             --marrom: #8c490d;
             --laranja: #f78520;
@@ -26,16 +25,12 @@
             background: var(--marrom);
         }
 
-        /* ESTRUTURA PRINCIPAL */
-
         .auth-page {
             display: grid;
             grid-template-columns: 58.5% 41.5%;
             min-height: 100vh;
             min-height: 100dvh;
         }
-
-        /* ÁREA DA LOGO */
 
         .brand-panel {
             position: relative;
@@ -89,8 +84,6 @@
             bottom: -80px;
         }
 
-        /* PAINEL DO CADASTRO */
-
         .form-panel {
             display: flex;
             align-items: center;
@@ -111,8 +104,6 @@
             letter-spacing: -0.035em;
             margin: 0 0 67px;
         }
-
-        /* CAMPOS */
 
         .field + .field {
             margin-top: 19px;
@@ -147,8 +138,6 @@
             box-shadow: 0 0 0 3px #f7852038;
         }
 
-        /* SENHA */
-
         .password-control {
             position: relative;
         }
@@ -176,8 +165,6 @@
             width: 22px;
             height: 22px;
         }
-
-        /* BOTÕES */
 
         .form-actions {
             display: flex;
@@ -219,8 +206,6 @@
             background: var(--laranja-escuro);
         }
 
-        /* MENSAGENS */
-
         .status {
             margin-top: 15px;
             font-size: 13px;
@@ -236,10 +221,7 @@
             display: none;
         }
 
-        /* RESPONSIVIDADE */
-
         @media (max-width: 800px) {
-
             .auth-page {
                 display: flex;
                 flex-direction: column;
@@ -300,7 +282,6 @@
         }
 
         @media (max-width: 360px) {
-
             .brand-panel {
                 min-height: 170px;
             }
@@ -325,8 +306,6 @@
 
     <main class="auth-page">
 
-        <!-- IDENTIDADE VISUAL -->
-
         <section class="brand-panel">
 
             <div class="decoration decoration-one"></div>
@@ -341,8 +320,6 @@
 
         </section>
 
-        <!-- FORMULÁRIO DE CADASTRO -->
-
         <section class="form-panel">
 
             <div class="form-content">
@@ -350,8 +327,6 @@
                 <h1>Cadastro</h1>
 
                 <form id="cadastro-form">
-
-                    <!-- NOME -->
 
                     <div class="field">
 
@@ -370,8 +345,6 @@
 
                     </div>
 
-                    <!-- EMAIL -->
-
                     <div class="field">
 
                         <label for="email">
@@ -388,8 +361,6 @@
                         >
 
                     </div>
-
-                    <!-- SENHA -->
 
                     <div class="field">
 
@@ -440,8 +411,6 @@
 
                     </div>
 
-                    <!-- CONFIRMAR SENHA -->
-
                     <div class="field">
 
                         <label for="confirmar-senha">
@@ -491,8 +460,6 @@
 
                     </div>
 
-                    <!-- BOTÕES -->
-
                     <div class="form-actions">
 
                         <a
@@ -511,8 +478,6 @@
 
                     </div>
 
-                    <!-- MENSAGEM DO FORMULÁRIO -->
-
                     <p
                         id="cadastro-status"
                         class="status"
@@ -530,32 +495,16 @@
     </main>
 
     <script>
-
-        // LOCALIZAR ELEMENTOS
-
         const formulario = document.querySelector('#cadastro-form');
-
         const senha = document.querySelector('#senha');
-
         const confirmarSenha = document.querySelector('#confirmar-senha');
-
         const statusCadastro = document.querySelector('#cadastro-status');
 
-
-        // MOSTRAR MENSAGENS
-
         function mostrarStatus(mensagem, erro = false) {
-
             statusCadastro.textContent = mensagem;
-
             statusCadastro.hidden = false;
-
             statusCadastro.classList.toggle('error', erro);
-
         }
-
-
-        // MOSTRAR OU ESCONDER SENHAS
 
         document.querySelectorAll('[data-password-toggle]')
             .forEach(function (botao) {
@@ -567,70 +516,40 @@
                     );
 
                     if (campo.type === 'password') {
-
                         campo.type = 'text';
-
-                        botao.setAttribute(
-                            'aria-label',
-                            'Ocultar senha'
-                        );
-
+                        botao.setAttribute('aria-label', 'Ocultar senha');
                     } else {
-
                         campo.type = 'password';
-
-                        botao.setAttribute(
-                            'aria-label',
-                            'Mostrar senha'
-                        );
-
+                        botao.setAttribute('aria-label', 'Mostrar senha');
                     }
 
                 });
 
             });
 
-
-        // VALIDAÇÃO DO FORMULÁRIO
-
         formulario.addEventListener('submit', function (evento) {
 
             evento.preventDefault();
-
-            // Validar preenchimento dos campos
 
             if (!formulario.reportValidity()) {
                 return;
             }
 
-            // Conferir se as senhas são iguais
-
             if (senha.value !== confirmarSenha.value) {
-
                 mostrarStatus(
                     'As senhas não são iguais. Confira e tente novamente.',
                     true
                 );
 
                 confirmarSenha.focus();
-
                 return;
             }
 
-            // Cadastro ainda não conectado à API
-
             mostrarStatus(
-                'Formulário conferido! Ainda falta conectar o cadastro à API da Theka.'
+                'Dados conferidos, mas o cadastro ainda não está disponível.'
             );
 
-            // INTEGRAÇÃO FUTURA:
-            // POST /users/
-            //
-            // Essa etapa será desenvolvida
-            // junto com sua madrinha da EJECT.
-
         });
-
     </script>
 
 </body>
