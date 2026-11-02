@@ -1,7 +1,6 @@
 
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,6 +21,7 @@
 
         body {
             margin: 0;
+            min-width: 1080px;
             font-family: Arial, Helvetica, sans-serif;
             color: var(--texto);
             background: var(--creme);
@@ -91,6 +91,80 @@
             font-size: 28px;
         }
 
+        .filtros {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto;
+            align-items: end;
+            gap: 14px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid #efd9c4;
+            border-radius: 14px;
+            background: var(--branco);
+        }
+
+        .campo-filtro {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .campo-filtro label {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--marrom);
+        }
+
+        .campo-filtro input,
+        .campo-filtro select {
+            width: 100%;
+            min-height: 44px;
+            padding: 10px 12px;
+            border: 1px solid #d6bda8;
+            border-radius: 8px;
+            background: var(--branco);
+            color: var(--texto);
+            font: inherit;
+        }
+
+        .campo-filtro input:focus-visible,
+        .campo-filtro select:focus-visible,
+        .botao-limpar:focus-visible {
+            outline: 3px solid #f7852080;
+            outline-offset: 2px;
+        }
+
+        .botao-limpar {
+            min-height: 44px;
+            padding: 10px 16px;
+            border: 1px solid var(--marrom);
+            border-radius: 8px;
+            color: var(--marrom);
+            background: var(--branco);
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .botao-limpar:hover {
+            background: #fff2e4;
+        }
+
+        .informacoes-busca {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 0 0 20px;
+            font-size: 14px;
+            color: #725a49;
+        }
+
+        .informacoes-busca p {
+            margin: 0;
+        }
+
         .grade-livros {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -102,6 +176,11 @@
             border: 1px solid #efd9c4;
             border-radius: 14px;
             background: var(--branco);
+        }
+
+        .livro[hidden],
+        .estado-vazio[hidden] {
+            display: none;
         }
 
         .capa {
@@ -140,136 +219,225 @@
             font-size: 14px;
         }
 
-        @media (max-width: 900px) {
-            .grade-livros {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
+        .detalhes-livro {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
         }
 
-        @media (max-width: 600px) {
-            .cabecalho {
-                flex-wrap: wrap;
-                padding: 16px 6%;
-            }
+        .etiqueta {
+            padding: 6px 9px;
+            border-radius: 999px;
+            background: #fff0dc;
+            color: #75400e;
+            font-size: 12px;
+        }
 
-            .logo {
-                font-size: 28px;
-            }
+        .estado-vazio {
+            padding: 35px 20px;
+            border: 1px dashed #d6bda8;
+            border-radius: 14px;
+            background: var(--branco);
+            text-align: center;
+        }
 
-            .menu {
-                gap: 16px;
-            }
+        .estado-vazio h3 {
+            margin: 0 0 8px;
+            color: var(--marrom);
+        }
 
-            .banner {
-                padding: 48px 6%;
-            }
-
-            .banner h1 {
-                font-size: 34px;
-            }
-
-            .banner p {
-                font-size: 15px;
-            }
-
-            .livros {
-                padding: 35px 6% 55px;
-            }
-
-            .livros h2 {
-                font-size: 25px;
-            }
-
-            .grade-livros {
-                grid-template-columns: 1fr;
-            }
-
-            .capa {
-                min-height: 200px;
-            }
+        .estado-vazio p {
+            margin: 0;
+            color: #725a49;
         }
     </style>
 </head>
 
 <body>
-
     <header class="cabecalho">
-
-        <a class="logo" href="acervo.html">
-            Theka
-        </a>
-
+        <a class="logo" href="acervo.html">Theka</a>
         <nav class="menu" aria-label="Navegação principal">
             <a href="#livros">Acervo</a>
             <a href="login.html">Login</a>
         </nav>
-
     </header>
 
     <main>
-
         <section class="banner">
-
             <div class="banner-conteudo">
-
                 <h1>Explore nosso acervo</h1>
-
-                <p>
-                    Descubra histórias, autores e novas leituras
-                    em um só lugar.
-                </p>
-
+                <p>Descubra histórias, autores e novas leituras em um só lugar.</p>
             </div>
-
         </section>
 
         <section class="livros" id="livros">
-
             <h2>Livros em destaque</h2>
 
-            <div class="grade-livros">
+            <div class="filtros" role="search" aria-label="Pesquisar e filtrar livros">
+                <div class="campo-filtro">
+                    <label for="busca">Pesquisar livro ou autor</label>
+                    <input
+                        id="busca"
+                        type="search"
+                        placeholder="Digite um título ou autor"
+                        autocomplete="off"
+                    >
+                </div>
 
-                <article class="livro">
+                <div class="campo-filtro">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria">
+                        <option value="">Todas</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Naturalismo">Naturalismo</option>
+                        <option value="Regionalismo">Regionalismo</option>
+                    </select>
+                </div>
 
-                    <div class="capa capa-1">
-                        Dom Casmurro
-                    </div>
+                <div class="campo-filtro">
+                    <label for="autor">Autor</label>
+                    <select id="autor">
+                        <option value="">Todos</option>
+                        <option value="Machado de Assis">Machado de Assis</option>
+                        <option value="Aluísio Azevedo">Aluísio Azevedo</option>
+                        <option value="Graciliano Ramos">Graciliano Ramos</option>
+                    </select>
+                </div>
 
-                    <h3>Dom Casmurro</h3>
-
-                    <p>Machado de Assis</p>
-
-                </article>
-
-                <article class="livro">
-
-                    <div class="capa capa-2">
-                        O Cortiço
-                    </div>
-
-                    <h3>O Cortiço</h3>
-
-                    <p>Aluísio Azevedo</p>
-
-                </article>
-
-                <article class="livro">
-
-                    <div class="capa capa-3">
-                        Vidas Secas
-                    </div>
-
-                    <h3>Vidas Secas</h3>
-
-                    <p>Graciliano Ramos</p>
-
-                </article>
-
+                <button class="botao-limpar" id="limpar" type="button">
+                    Limpar
+                </button>
             </div>
 
-        </section>
+            <div class="informacoes-busca">
+                <p id="contador" role="status" aria-live="polite">
+                    3 livros encontrados
+                </p>
+            </div>
 
+            <div class="grade-livros" id="grade-livros">
+                <article
+                    class="livro"
+                    data-titulo="Dom Casmurro"
+                    data-autor="Machado de Assis"
+                    data-categoria="Romance"
+                >
+                    <div class="capa capa-1">Dom Casmurro</div>
+                    <h3>Dom Casmurro</h3>
+                    <p>Machado de Assis</p>
+                    <div class="detalhes-livro">
+                        <span class="etiqueta">Romance</span>
+                    </div>
+                </article>
+
+                <article
+                    class="livro"
+                    data-titulo="O Cortiço"
+                    data-autor="Aluísio Azevedo"
+                    data-categoria="Naturalismo"
+                >
+                    <div class="capa capa-2">O Cortiço</div>
+                    <h3>O Cortiço</h3>
+                    <p>Aluísio Azevedo</p>
+                    <div class="detalhes-livro">
+                        <span class="etiqueta">Naturalismo</span>
+                    </div>
+                </article>
+
+                <article
+                    class="livro"
+                    data-titulo="Vidas Secas"
+                    data-autor="Graciliano Ramos"
+                    data-categoria="Regionalismo"
+                >
+                    <div class="capa capa-3">Vidas Secas</div>
+                    <h3>Vidas Secas</h3>
+                    <p>Graciliano Ramos</p>
+                    <div class="detalhes-livro">
+                        <span class="etiqueta">Regionalismo</span>
+                    </div>
+                </article>
+            </div>
+
+            <div class="estado-vazio" id="estado-vazio" hidden>
+                <h3>Nenhum livro encontrado</h3>
+                <p>Tente outra pesquisa ou altere os filtros.</p>
+            </div>
+        </section>
     </main>
 
+    <script>
+        const busca = document.querySelector('#busca');
+        const categoria = document.querySelector('#categoria');
+        const autor = document.querySelector('#autor');
+        const limpar = document.querySelector('#limpar');
+        const livros = Array.from(document.querySelectorAll('.livro'));
+        const contador = document.querySelector('#contador');
+        const estadoVazio = document.querySelector('#estado-vazio');
+
+        function normalizar(texto) {
+            return texto
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .trim();
+        }
+
+        function filtrarLivros() {
+            const termo = normalizar(busca.value);
+            const categoriaEscolhida = categoria.value;
+            const autorEscolhido = autor.value;
+            let quantidade = 0;
+
+            livros.forEach(function (livro) {
+                const titulo = normalizar(livro.dataset.titulo);
+                const autor = normalizar(livro.dataset.autor);
+                const correspondeBusca =
+                    titulo.includes(termo) || autor.includes(termo);
+
+                const correspondeCategoria =
+                    !categoriaEscolhida ||
+                    livro.dataset.categoria === categoriaEscolhida;
+
+                const correspondeAutor =
+                    !autorEscolhido ||
+                    livro.dataset.autor === autorEscolhido;
+
+                const mostrar =
+                    correspondeBusca &&
+                    correspondeCategoria &&
+                    correspondeAutor;
+
+                livro.hidden = !mostrar;
+
+                if (mostrar) {
+                    quantidade += 1;
+                }
+            });
+
+            contador.textContent =
+                quantidade +
+                (quantidade === 1
+                    ? ' livro encontrado'
+                    : ' livros encontrados');
+
+            estadoVazio.hidden = quantidade !== 0;
+        }
+
+        busca.addEventListener('input', filtrarLivros);
+        categoria.addEventListener('change', filtrarLivros);
+        autor.addEventListener('change', filtrarLivros);
+
+        limpar.addEventListener('click', function () {
+            busca.value = '';
+            categoria.value = '';
+            autor.value = '';
+            filtrarLivros();
+            busca.focus();
+        });
+
+        filtrarLivros();
+    </script>
 </body>
 </html>
