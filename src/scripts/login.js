@@ -1,19 +1,82 @@
 
-const formulario = document.querySelector('#login-form');
-const campoEmail = document.querySelector('#email');
-const campoSenha = document.querySelector('#senha');
+const botoesOlho = document.querySelectorAll('[data-mostrar-senha]');
 
-formulario.addEventListener('submit', function(evento) {
+botoesOlho.forEach(function (botao) {
+    botao.addEventListener('click', function () {
+        const campo = document.getElementById(botao.dataset.mostrarSenha);
+        const visivel = campo.type === 'text';
 
-    evento.preventDefault();
+        campo.type = visivel ? 'password' : 'text';
 
-    const email = campoEmail.value.trim();
-    const senha = campoSenha.value;
+        botao.setAttribute(
+            'aria-label',
+            visivel ? 'Mostrar senha' : 'Ocultar senha'
+        );
 
-    if (email === '' || senha === '') {
-        alert('Preencha o e-mail e a senha.');
-        return;
-    }
-
-    alert('Os dados foram conferidos, mas o login ainda não está disponível.');
+        botao.setAttribute(
+            'aria-pressed',
+            String(!visivel)
+        );
+    });
 });
+
+const formulario = document.querySelector('[data-formulario]');
+
+function mostrarMensagem(texto, erro = false) {
+    const aviso = document.querySelector('#mensagem-formulario');
+
+    aviso.textContent = texto;
+    aviso.classList.toggle('auth-status--error', erro);
+    aviso.hidden = false;
+}
+
+if (formulario) {
+    formulario.addEventListener('submit', function (evento) {
+        evento.preventDefault();
+
+        const email = formulario.querySelector('input[type="email"]');
+
+        if (email) {
+            email.value = email.value.trim();
+        }
+
+        if (!formulario.reportValidity()) {
+            return;
+        }
+
+        const pagina = formulario.dataset.formulario;
+
+        if (pagina === 'cadastro' || pagina === 'redefinicao') {
+            const senha = formulario.querySelector('[name="senha"]');
+            const confirmacao = formulario.querySelector(
+                '[name="confirmar-senha"]'
+            );
+
+            if (senha.value !== confirmacao.value) {
+                mostrarMensagem(
+                    'As senhas não coincidem. Confira e tente novamente.',
+                    true
+                );
+
+                confirmacao.focus();
+                return;
+            }
+        }
+
+        if (pagina === 'login') {
+            mostrarMensagem(
+                'Dados preenchidos corretamente. Nenhum acesso foi realizado.'
+            );
+        } else if (pagina === 'recuperacao') {
+            window.location.href = 'redefinir-senha.html';
+        } else if (pagina === 'redefinicao') {
+            mostrarMensagem(
+                'Senhas conferidas. Nenhuma senha foi alterada.'
+            );
+        } else if (pagina === 'cadastro') {
+            mostrarMensagem(
+                'Formulário conferido. Nenhum cadastro foi realizado.'
+            );
+        }
+    });
+}

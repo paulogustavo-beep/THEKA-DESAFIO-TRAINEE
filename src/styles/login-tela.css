@@ -1,0 +1,340 @@
+:root {
+    --marrom: #8c490d;
+    --laranja: #f78520;
+    --laranja-escuro: #da6b13;
+    --branco: #ffffff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--marrom);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.auth-layout {
+    --unidade: max(
+        1px,
+        min(
+            calc(100vw / 883),
+            calc(100dvh / 597)
+        )
+    );
+
+    display: grid;
+    grid-template-columns: 58.5% 41.5%;
+    min-height: 100vh;
+    min-height: max(
+        100dvh,
+        calc(597 * var(--unidade))
+    );
+}
+
+.auth-brand {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--marrom);
+}
+
+.auth-art {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.auth-logo {
+    position: absolute;
+    left: 9%;
+    bottom: 2%;
+    display: block;
+    width: 28.7%;
+    height: auto;
+}
+
+.auth-panel {
+    position: relative;
+    min-width: 0;
+    padding-top: calc(126 * var(--unidade));
+    padding-bottom: calc(44 * var(--unidade));
+    border-radius:
+        calc(18 * var(--unidade))
+        0
+        0
+        calc(18 * var(--unidade));
+    background: var(--branco);
+}
+
+.auth-content {
+    width: 63.5%;
+    margin-left: 9.5%;
+}
+
+.auth-title {
+    margin: 0 0 calc(54 * var(--unidade));
+    color: var(--laranja);
+    font-size: calc(34 * var(--unidade));
+    font-weight: 700;
+    line-height: calc(41 * var(--unidade));
+    letter-spacing: -0.04em;
+}
+
+.auth-form {
+    margin: 0;
+}
+
+.auth-field + .auth-field {
+    margin-top: calc(22 * var(--unidade));
+}
+
+.auth-label {
+    display: block;
+    margin-bottom: calc(3 * var(--unidade));
+    color: var(--laranja);
+    font-size: calc(13 * var(--unidade));
+    font-weight: 700;
+    line-height: calc(16 * var(--unidade));
+}
+
+.auth-input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: calc(23 * var(--unidade));
+    padding: 0 calc(10 * var(--unidade));
+    border: max(1px, var(--unidade)) solid var(--laranja);
+    border-radius: 999px;
+    outline: none;
+    background: var(--branco);
+    color: var(--marrom);
+    font: inherit;
+    font-size: calc(9 * var(--unidade));
+}
+
+.auth-input::placeholder {
+    color: #e6a275;
+    opacity: 1;
+}
+
+.auth-input:focus-visible {
+    border-color: var(--laranja-escuro);
+    box-shadow: 0 0 0 3px #f7852033;
+}
+
+.auth-password {
+    position: relative;
+}
+
+.auth-password .auth-input {
+    padding-right: calc(32 * var(--unidade));
+}
+
+.auth-eye {
+    position: absolute;
+    top: 50%;
+    right: calc(5 * var(--unidade));
+    display: grid;
+    place-items: center;
+    width: calc(22 * var(--unidade));
+    height: calc(22 * var(--unidade));
+    padding: 0;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--laranja);
+    cursor: pointer;
+}
+
+.auth-eye svg {
+    display: block;
+    width: calc(14 * var(--unidade));
+    height: calc(14 * var(--unidade));
+    pointer-events: none;
+}
+
+.auth-eye:hover {
+    color: var(--laranja-escuro);
+}
+
+.auth-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(6 * var(--unidade));
+    margin-top: calc(22 * var(--unidade));
+}
+
+.auth-link {
+    color: var(--laranja);
+    font-size: calc(10 * var(--unidade));
+    line-height: calc(15 * var(--unidade));
+    text-align: center;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+.auth-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--unidade);
+}
+
+.auth-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: calc(49 * var(--unidade));
+    min-height: calc(25 * var(--unidade));
+    padding:
+        calc(5 * var(--unidade))
+        calc(11 * var(--unidade));
+    border: 0;
+    border-radius: 999px;
+    background: var(--laranja);
+    color: var(--branco);
+    font: inherit;
+    font-size: calc(10 * var(--unidade));
+    font-weight: 700;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.auth-button:hover {
+    background: var(--laranja-escuro);
+}
+
+.auth-eye:focus-visible,
+.auth-button:focus-visible,
+.auth-link:focus-visible {
+    outline: 2px solid var(--marrom);
+    outline-offset: 3px;
+}
+
+.auth-status {
+    margin: 16px 0 0;
+    color: var(--marrom);
+    font-size: max(13px, calc(10 * var(--unidade)));
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.auth-status--error {
+    color: #a32121;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 800px) {
+    .auth-layout {
+        --unidade: 1px;
+
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        min-height: 100dvh;
+    }
+
+    .auth-brand {
+        flex: 0 0 auto;
+        height: 220px;
+    }
+
+    .auth-art {
+        top: -20px;
+        left: 50%;
+        width: min(100%, 440px);
+        height: 240px;
+        transform: translateX(-50%);
+    }
+
+    .auth-logo {
+        left: 22px;
+        bottom: 8px;
+        width: 120px;
+    }
+
+    .auth-panel {
+        flex: 1;
+        margin-top: -16px;
+        padding: 32px 24px 40px;
+        border-radius: 24px 24px 0 0;
+    }
+
+    .auth-content {
+        width: 100%;
+        max-width: 440px;
+        margin: 0 auto;
+    }
+
+    .auth-title {
+        margin-bottom: 32px;
+        font-size: 32px;
+        line-height: 1.2;
+    }
+
+    .auth-field + .auth-field {
+        margin-top: 20px;
+    }
+
+    .auth-label {
+        margin-bottom: 6px;
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .auth-input {
+        height: 46px;
+        padding: 0 14px;
+        font-size: 16px;
+    }
+
+    .auth-password .auth-input {
+        padding-right: 50px;
+    }
+
+    .auth-eye {
+        right: 3px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .auth-eye svg {
+        width: 21px;
+        height: 21px;
+    }
+
+    .auth-links {
+        gap: 10px;
+        margin-top: 24px;
+    }
+
+    .auth-link {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .auth-actions {
+        margin-top: 16px;
+    }
+
+    .auth-button {
+        min-height: 44px;
+        padding: 10px 22px;
+        font-size: 14px;
+    }
+}
