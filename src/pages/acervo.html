@@ -1,443 +1,158 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acervo | Theka</title>
-
-    <style>
-        :root {
-            --marrom: #8c490d;
-            --laranja: #f78520;
-            --creme: #fff8f0;
-            --texto: #392414;
-            --branco: #ffffff;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-width: 1080px;
-            font-family: Arial, Helvetica, sans-serif;
-            color: var(--texto);
-            background: var(--creme);
-        }
-
-        .cabecalho {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            padding: 18px 7%;
-            background: var(--marrom);
-        }
-
-        .logo {
-            color: var(--laranja);
-            font-size: 32px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .menu {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .menu a {
-            color: var(--branco);
-            font-size: 15px;
-            text-decoration: none;
-        }
-
-        .menu a:hover {
-            text-decoration: underline;
-        }
-
-        .banner {
-            padding: 70px 7%;
-            background: #f6dfc6;
-        }
-
-        .banner-conteudo {
-            max-width: 650px;
-        }
-
-        .banner h1 {
-            margin: 0 0 15px;
-            color: var(--marrom);
-            font-size: clamp(32px, 5vw, 56px);
-        }
-
-        .banner p {
-            max-width: 550px;
-            margin: 0;
-            font-size: 17px;
-            line-height: 1.6;
-        }
-
-        .livros {
-            padding: 48px 7% 75px;
-        }
-
-        .livros h2 {
-            margin: 0 0 26px;
-            color: var(--marrom);
-            font-size: 28px;
-        }
-
-        .filtros {
-            display: grid;
-            grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr)) auto;
-            align-items: end;
-            gap: 14px;
-            padding: 22px;
-            margin-bottom: 20px;
-            border: 1px solid #efd9c4;
-            border-radius: 14px;
-            background: var(--branco);
-        }
-
-        .campo-filtro {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 0;
-        }
-
-        .campo-filtro label {
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--marrom);
-        }
-
-        .campo-filtro input,
-        .campo-filtro select {
-            width: 100%;
-            min-height: 44px;
-            padding: 10px 12px;
-            border: 1px solid #d6bda8;
-            border-radius: 8px;
-            background: var(--branco);
-            color: var(--texto);
-            font: inherit;
-        }
-
-        .campo-filtro input:focus-visible,
-        .campo-filtro select:focus-visible,
-        .botao-limpar:focus-visible {
-            outline: 3px solid #f7852080;
-            outline-offset: 2px;
-        }
-
-        .botao-limpar {
-            min-height: 44px;
-            padding: 10px 16px;
-            border: 1px solid var(--marrom);
-            border-radius: 8px;
-            color: var(--marrom);
-            background: var(--branco);
-            font: inherit;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .botao-limpar:hover {
-            background: #fff2e4;
-        }
-
-        .informacoes-busca {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin: 0 0 20px;
-            font-size: 14px;
-            color: #725a49;
-        }
-
-        .informacoes-busca p {
-            margin: 0;
-        }
-
-        .grade-livros {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 24px;
-        }
-
-        .livro {
-            padding: 18px;
-            border: 1px solid #efd9c4;
-            border-radius: 14px;
-            background: var(--branco);
-        }
-
-        .livro[hidden],
-        .estado-vazio[hidden] {
-            display: none;
-        }
-
-        .capa {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 220px;
-            padding: 20px;
-            border-radius: 8px;
-            color: var(--branco);
-            font-size: 24px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .capa-1 {
-            background: #7d4018;
-        }
-
-        .capa-2 {
-            background: #c56c21;
-        }
-
-        .capa-3 {
-            background: #405a50;
-        }
-
-        .livro h3 {
-            margin: 16px 0 7px;
-            font-size: 20px;
-        }
-
-        .livro p {
-            margin: 0;
-            color: #725a49;
-            font-size: 14px;
-        }
-
-        .detalhes-livro {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 14px;
-        }
-
-        .etiqueta {
-            padding: 6px 9px;
-            border-radius: 999px;
-            background: #fff0dc;
-            color: #75400e;
-            font-size: 12px;
-        }
-
-        .estado-vazio {
-            padding: 35px 20px;
-            border: 1px dashed #d6bda8;
-            border-radius: 14px;
-            background: var(--branco);
-            text-align: center;
-        }
-
-        .estado-vazio h3 {
-            margin: 0 0 8px;
-            color: var(--marrom);
-        }
-
-        .estado-vazio p {
-            margin: 0;
-            color: #725a49;
-        }
-    </style>
+    <link rel="stylesheet" href="../styles/acervo.css">
+    <script src="../scripts/acervo.js" defer></script>
 </head>
-
 <body>
-    <header class="cabecalho">
-        <a class="logo" href="acervo.html">Theka</a>
+    <svg class="simbolos" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+            <symbol id="icone-busca" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></symbol>
+            <symbol id="icone-usuario" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></symbol>
+            <symbol id="icone-seta" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M7 17 17 7M7 7h10v10"/></symbol>
+            <symbol id="icone-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+            <symbol id="icone-celular" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></symbol>
+            <symbol id="icone-globo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><path d="M2 12h20"/></symbol>
+            <symbol id="icone-localizacao" viewBox="0 0 24 24"><path d="M18 8c0 4.5-6 9-6 9S6 12.5 6 8a6 6 0 0 1 12 0Z"/><circle cx="12" cy="8" r="2"/><path d="M6 16c-2 1-3 2-3 3 0 2 4 3 9 3s9-1 9-3c0-1-1-2-3-3"/></symbol>
+            <symbol id="icone-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="icone-tiktok" viewBox="0 0 24 24"><path d="M14 3v12.5a4.5 4.5 0 1 1-4-4.47M14 3c.5 4 3 6 7 6"/></symbol>
+            <symbol id="icone-x" viewBox="0 0 24 24"><path d="M4 3h5l11 18h-5ZM20 3l-6.4 7.5M4 21l6.4-7.5"/></symbol>
+            <symbol id="icone-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="M12 11v6" stroke="var(--rosa)"/><circle cx="12" cy="7" r="1" fill="var(--rosa)" stroke="none"/></symbol>
+            <symbol id="icone-ajuda" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5" stroke="var(--rosa)"/><circle cx="12" cy="17" r="1" fill="var(--rosa)" stroke="none"/></symbol>
+        </defs>
+    </svg>
+    <a class="pular" href="#catalogo">Ir para o catálogo</a>
+    <header class="cabecalho" id="topo">
+        <a class="marca-nav" href="acervo.html" aria-label="Theka — início">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 13C25 2 46 14 57 44c-18 3-36 0-46-10C5 28 6 19 12 13Z" fill="currentColor"/></svg>
+        </a>
         <nav class="menu" aria-label="Navegação principal">
-            <a href="#livros">Acervo</a>
-            <a href="login.html">Login</a>
+            <a href="#catalogo" aria-current="page">Acervo</a>
+            <a href="#sobre">Sobre nós</a>
+            <a class="acesso" href="login.html" aria-label="Ir para o login" title="Ir para o login">
+                <svg class="icone" aria-hidden="true"><use href="#icone-usuario"/></svg>
+            </a>
         </nav>
     </header>
-
-    <main>
-        <section class="banner">
-            <div class="banner-conteudo">
-                <h1>Explore nosso acervo</h1>
-                <p>Descubra histórias, autores e novas leituras em um só lugar.</p>
+    <main class="conteudo">
+        <section class="destaques" aria-labelledby="titulo-destaques">
+            <div class="destaque-texto">
+                <h1 id="titulo-destaques">Novidades<br>da semana</h1>
+                <div class="destaque-descricao" aria-live="polite">
+                    <p class="destaque-titulo" id="destaque-titulo"></p>
+                    <p class="destaque-autor" id="destaque-autor"></p>
+                </div>
             </div>
+            <div class="destaque-livros" id="destaque-livros" role="group" aria-label="Livros em destaque"></div>
         </section>
-
-        <section class="livros" id="livros">
-            <h2>Livros em destaque</h2>
-
-            <div class="filtros" role="search" aria-label="Pesquisar e filtrar livros">
-                <div class="campo-filtro">
-                    <label for="busca">Pesquisar livro ou autor</label>
-                    <input
-                        id="busca"
-                        type="search"
-                        placeholder="Digite um título ou autor"
-                        autocomplete="off"
-                    >
-                </div>
-
-                <div class="campo-filtro">
-                    <label for="categoria">Categoria</label>
-                    <select id="categoria">
-                        <option value="">Todas</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Naturalismo">Naturalismo</option>
-                        <option value="Regionalismo">Regionalismo</option>
-                    </select>
-                </div>
-
-                <div class="campo-filtro">
-                    <label for="autor">Autor</label>
-                    <select id="autor">
-                        <option value="">Todos</option>
-                        <option value="Machado de Assis">Machado de Assis</option>
-                        <option value="Aluísio Azevedo">Aluísio Azevedo</option>
-                        <option value="Graciliano Ramos">Graciliano Ramos</option>
-                    </select>
-                </div>
-
-                <button class="botao-limpar" id="limpar" type="button">
-                    Limpar
-                </button>
+        <section class="catalogo" id="catalogo" aria-labelledby="titulo-catalogo">
+            <h2 id="titulo-catalogo">Veja nosso catálogo</h2>
+            <form class="filtros" id="form-busca" role="search">
+                <label class="busca">
+                    <span class="sr-only">Pesquisar por título ou autor</span>
+                    <input id="busca" type="search" placeholder="Fazer busca" autocomplete="off" maxlength="180">
+                </label>
+                <span class="filtro-visual">Gênero <svg class="icone" aria-hidden="true"><use href="#icone-chevron"/></svg></span>
+                <span class="filtro-visual">Editora <svg class="icone" aria-hidden="true"><use href="#icone-chevron"/></svg></span>
+                <button class="botao buscar-submit" type="submit">Buscar <svg class="icone" aria-hidden="true"><use href="#icone-busca"/></svg></button>
+            </form>
+            <div class="resultado-barra">
+                <p class="sr-only" id="resultados" role="status" aria-live="polite"></p>
+                <button class="link-botao" id="limpar-busca" type="button" hidden>Limpar busca</button>
             </div>
-
-            <div class="informacoes-busca">
-                <p id="contador" role="status" aria-live="polite">
-                    3 livros encontrados
-                </p>
+            <div class="catalogo-grade">
+                <div class="grade-livros" id="grade-livros"></div>
+                <button class="adicionar-livro" id="adicionar" type="button" aria-label="Adicionar material" title="Adicionar material"><span aria-hidden="true">+</span></button>
             </div>
-
-            <div class="grade-livros" id="grade-livros">
-                <article
-                    class="livro"
-                    data-titulo="Dom Casmurro"
-                    data-autor="Machado de Assis"
-                    data-categoria="Romance"
-                >
-                    <div class="capa capa-1">Dom Casmurro</div>
-                    <h3>Dom Casmurro</h3>
-                    <p>Machado de Assis</p>
-                    <div class="detalhes-livro">
-                        <span class="etiqueta">Romance</span>
-                    </div>
-                </article>
-
-                <article
-                    class="livro"
-                    data-titulo="O Cortiço"
-                    data-autor="Aluísio Azevedo"
-                    data-categoria="Naturalismo"
-                >
-                    <div class="capa capa-2">O Cortiço</div>
-                    <h3>O Cortiço</h3>
-                    <p>Aluísio Azevedo</p>
-                    <div class="detalhes-livro">
-                        <span class="etiqueta">Naturalismo</span>
-                    </div>
-                </article>
-
-                <article
-                    class="livro"
-                    data-titulo="Vidas Secas"
-                    data-autor="Graciliano Ramos"
-                    data-categoria="Regionalismo"
-                >
-                    <div class="capa capa-3">Vidas Secas</div>
-                    <h3>Vidas Secas</h3>
-                    <p>Graciliano Ramos</p>
-                    <div class="detalhes-livro">
-                        <span class="etiqueta">Regionalismo</span>
-                    </div>
-                </article>
-            </div>
-
-            <div class="estado-vazio" id="estado-vazio" hidden>
+            <div class="vazio" id="vazio" hidden>
                 <h3>Nenhum livro encontrado</h3>
-                <p>Tente outra pesquisa ou altere os filtros.</p>
+                <p>Tente outro título ou autor.</p>
+                <button class="botao botao-contorno" id="recomecar-busca" type="button">Limpar busca</button>
             </div>
+            <nav class="paginacao" id="paginacao" aria-label="Páginas do catálogo"></nav>
+            <p class="aviso-local sr-only" id="aviso-local">Catálogo demonstrativo. As alterações ficam somente neste navegador.</p>
         </section>
     </main>
+    <footer class="rodape" id="sobre">
+        <div class="rodape-conteudo">
+            <div class="rodape-marca">
+                <span class="rodape-logo" role="img" aria-label="Theka"></span>
+                <p>Aventuras literárias</p>
+            </div>
+            <section aria-labelledby="titulo-contato">
+                <h2 id="titulo-contato">Contato</h2>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-celular"/></svg><span>(84) 9 9999-2222</span></p>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-globo"/></svg><span>www.theka.com.br</span></p>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-localizacao"/></svg><span>Natal, RN</span></p>
+            </section>
+            <section aria-labelledby="titulo-redes">
+                <h2 id="titulo-redes">Redes sociais</h2>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-instagram"/></svg><span>@theka.biblioteca</span></p>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-tiktok"/></svg><span>@theka.biblioteca</span></p>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-x"/></svg><span>@theka.biblioteca</span></p>
+            </section>
+            <section aria-labelledby="titulo-ajuda">
+                <h2 id="titulo-ajuda">Ajuda</h2>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-info"/></svg><span>Central de ajuda</span></p>
+                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-ajuda"/></svg><span>FAQ</span></p>
+            </section>
+        </div>
+        <p class="rodape-creditos">Mockup desenvolvido por EJECT</p>
+    </footer>
 
-    <script>
-        const busca = document.querySelector('#busca');
-        const categoria = document.querySelector('#categoria');
-        const autor = document.querySelector('#autor');
-        const limpar = document.querySelector('#limpar');
-        const livros = Array.from(document.querySelectorAll('.livro'));
-        const contador = document.querySelector('#contador');
-        const estadoVazio = document.querySelector('#estado-vazio');
+    <dialog class="modal modal-editor" id="modal-editor" aria-labelledby="editor-titulo">
+        <button class="fechar" type="button" data-fechar aria-label="Fechar formulário">×</button>
+        <h2 id="editor-titulo">Adicionar material ao catálogo</h2>
+        <form id="form-livro">
+            <div class="editor-grade">
+                <div class="editor-capa">
+                    <div id="capa-previa"></div>
+                    <label class="botao botao-contorno arquivo-botao" for="arquivo-capa">Escolher capa</label>
+                    <input class="arquivo-input" id="arquivo-capa" type="file" accept="image/png,image/jpeg,image/webp">
+                    <button class="link-botao" id="remover-capa" type="button" hidden>Remover imagem</button>
+                    <p class="dica">PNG, JPG ou WebP de até 500 KB.</p>
+                </div>
+                <div class="editor-campos">
+                    <label class="campo campo-largo">Título do material
+                        <input id="livro-titulo" name="titulo" required maxlength="120">
+                    </label>
+                    <label class="campo">Número de páginas
+                        <input id="livro-paginas" name="paginas" type="number" min="1" max="50000" step="1" required>
+                    </label>
+                    <label class="campo"><span>ISBN <span class="opcional">(opcional)</span></span>
+                        <input id="livro-isbn" name="isbn" maxlength="25">
+                    </label>
+                    <label class="campo campo-largo">Autor
+                        <input id="livro-autor" name="autor" required maxlength="120">
+                    </label>
+                    <label class="campo">Ano de publicação
+                        <input id="livro-ano" name="ano" type="number" min="1" max="2100" step="1" required>
+                    </label>
+                    <label class="campo">Editora
+                        <input id="livro-editora" name="editora" required maxlength="80">
+                    </label>
+                    <label class="campo campo-inteiro">Categoria
+                        <input id="livro-categoria" name="categoria" required maxlength="60">
+                    </label>
+                    <label class="campo campo-inteiro">Resumo do material
+                        <textarea id="livro-resumo" name="resumo" rows="4" required maxlength="2000"></textarea>
+                    </label>
+                </div>
+            </div>
+            <p class="erro-formulario" id="erro-formulario" role="alert" hidden></p>
+            <div class="editor-acoes">
+                <div class="acoes">
+                    <button class="botao botao-contorno" id="cancelar-editor" type="button">Cancelar</button>
+                    <button class="botao" id="salvar-livro" type="submit">Salvar</button>
+                </div>
+            </div>
+        </form>
+    </dialog>
 
-        function normalizar(texto) {
-            return texto
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g, '')
-                .toLowerCase()
-                .trim();
-        }
-
-        function filtrarLivros() {
-            const termo = normalizar(busca.value);
-            const categoriaEscolhida = categoria.value;
-            const autorEscolhido = autor.value;
-            let quantidade = 0;
-
-            livros.forEach(function (livro) {
-                const titulo = normalizar(livro.dataset.titulo);
-                const autor = normalizar(livro.dataset.autor);
-                const correspondeBusca =
-                    titulo.includes(termo) || autor.includes(termo);
-
-                const correspondeCategoria =
-                    !categoriaEscolhida ||
-                    livro.dataset.categoria === categoriaEscolhida;
-
-                const correspondeAutor =
-                    !autorEscolhido ||
-                    livro.dataset.autor === autorEscolhido;
-
-                const mostrar =
-                    correspondeBusca &&
-                    correspondeCategoria &&
-                    correspondeAutor;
-
-                livro.hidden = !mostrar;
-
-                if (mostrar) {
-                    quantidade += 1;
-                }
-            });
-
-            contador.textContent =
-                quantidade +
-                (quantidade === 1
-                    ? ' livro encontrado'
-                    : ' livros encontrados');
-
-            estadoVazio.hidden = quantidade !== 0;
-        }
-
-        busca.addEventListener('input', filtrarLivros);
-        categoria.addEventListener('change', filtrarLivros);
-        autor.addEventListener('change', filtrarLivros);
-
-        limpar.addEventListener('click', function () {
-            busca.value = '';
-            categoria.value = '';
-            autor.value = '';
-            filtrarLivros();
-            busca.focus();
-        });
-
-        filtrarLivros();
-    </script>
+    <div class="notificacao" id="notificacao" role="status" aria-live="polite" hidden></div>
+    <noscript><p class="sem-js">Ative o JavaScript para pesquisar e gerenciar os livros.</p></noscript>
 </body>
 </html>
