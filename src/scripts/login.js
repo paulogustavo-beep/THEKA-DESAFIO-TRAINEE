@@ -1,4 +1,3 @@
-
 const botoesOlho = document.querySelectorAll('[data-mostrar-senha]');
 
 botoesOlho.forEach(function (botao) {
@@ -8,15 +7,15 @@ botoesOlho.forEach(function (botao) {
 
         campo.type = visivel ? 'password' : 'text';
 
-        botao.setAttribute(
-            'aria-label',
-            visivel ? 'Mostrar senha' : 'Ocultar senha'
-        );
+        const descricao = botao.getAttribute('aria-label')
+            .replace(/^(Mostrar|Ocultar) /, '');
 
         botao.setAttribute(
-            'aria-pressed',
-            String(!visivel)
+            'aria-label',
+            (visivel ? 'Mostrar ' : 'Ocultar ') + descricao
         );
+
+        botao.setAttribute('aria-pressed', String(!visivel));
     });
 });
 
@@ -31,10 +30,21 @@ function mostrarMensagem(texto, erro = false) {
 }
 
 if (formulario) {
+    formulario.addEventListener('input', function () {
+        const aviso = document.querySelector('#mensagem-formulario');
+        aviso.hidden = true;
+        aviso.textContent = '';
+    });
+
     formulario.addEventListener('submit', function (evento) {
         evento.preventDefault();
 
+        const nome = formulario.querySelector('[name="nome"]');
         const email = formulario.querySelector('input[type="email"]');
+
+        if (nome) {
+            nome.value = nome.value.trim();
+        }
 
         if (email) {
             email.value = email.value.trim();
