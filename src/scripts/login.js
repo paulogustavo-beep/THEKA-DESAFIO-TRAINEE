@@ -9,13 +9,13 @@ botoesOlho.forEach(function (botao) {
 
         const descricao = botao.getAttribute('aria-label')
             .replace(/^(Mostrar|Ocultar) /, '');
+        botao.setAttribute('aria-label',
+            (visivel ? 'Mostrar ' : 'Ocultar ') + descricao);
 
         botao.setAttribute(
-            'aria-label',
-            (visivel ? 'Mostrar ' : 'Ocultar ') + descricao
+            'aria-pressed',
+            String(!visivel)
         );
-
-        botao.setAttribute('aria-pressed', String(!visivel));
     });
 });
 
@@ -78,7 +78,9 @@ if (formulario) {
                 'Dados preenchidos corretamente. Nenhum acesso foi realizado.'
             );
         } else if (pagina === 'recuperacao') {
-            window.location.href = 'redefinir-senha.html';
+            mostrarMensagem(
+                'E-mail conferido. Nenhuma mensagem foi enviada.'
+            );
         } else if (pagina === 'redefinicao') {
             mostrarMensagem(
                 'Senhas conferidas. Nenhuma senha foi alterada.'

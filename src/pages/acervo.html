@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acervo | Theka</title>
+    <title>Acervo | Meu projeto do Theka</title>
     <link rel="stylesheet" href="../styles/acervo.css">
-    <script src="../scripts/acervo.js" defer></script>
+    <script src="../scripts/acervo.js" type="module"></script>
 </head>
-<body>
+<body class="acervo-page">
     <svg class="simbolos" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
             <symbol id="icone-busca" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></symbol>
@@ -27,11 +27,13 @@
     <a class="pular" href="#catalogo">Ir para o catálogo</a>
     <header class="cabecalho" id="topo">
         <a class="marca-nav" href="acervo.html" aria-label="Theka — início">
-            <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 13C25 2 46 14 57 44c-18 3-36 0-46-10C5 28 6 19 12 13Z" fill="currentColor"/></svg>
+            <img src="../assets/acervo/simbolo.svg" alt="" width="54" height="54">
         </a>
-        <nav class="menu" aria-label="Navegação principal">
+        <button class="nav-abrir" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir navegação"><img src="../assets/acervo/simbolo.svg" alt="" width="54" height="54"></button>
+        <a class="marca-mobile" href="acervo.html" aria-label="Theka — início"><img src="../assets/acervo/logo-nav.svg" alt="Theka" width="145" height="40"></a>
+        <nav class="menu" id="menu-principal" aria-label="Navegação principal">
             <a href="#catalogo" aria-current="page">Acervo</a>
-            <a href="#sobre">Sobre nós</a>
+            <a href="sobre-nos.html">Sobre nós</a>
             <a class="acesso" href="login.html" aria-label="Ir para o login" title="Ir para o login">
                 <svg class="icone" aria-hidden="true"><use href="#icone-usuario"/></svg>
             </a>
@@ -40,7 +42,7 @@
     <main class="conteudo">
         <section class="destaques" aria-labelledby="titulo-destaques">
             <div class="destaque-texto">
-                <h1 id="titulo-destaques">Novidades<br>da semana</h1>
+                <h1 id="titulo-destaques"><span class="titulo-desktop">Novidades<br>da semana</span><span class="titulo-mobile">Novidade da semana</span></h1>
                 <div class="destaque-descricao" aria-live="polite">
                     <p class="destaque-titulo" id="destaque-titulo"></p>
                     <p class="destaque-autor" id="destaque-autor"></p>
@@ -55,9 +57,14 @@
                     <span class="sr-only">Pesquisar por título ou autor</span>
                     <input id="busca" type="search" placeholder="Fazer busca" autocomplete="off" maxlength="180">
                 </label>
-                <span class="filtro-visual">Gênero <svg class="icone" aria-hidden="true"><use href="#icone-chevron"/></svg></span>
-                <span class="filtro-visual">Editora <svg class="icone" aria-hidden="true"><use href="#icone-chevron"/></svg></span>
-                <button class="botao buscar-submit" type="submit">Buscar <svg class="icone" aria-hidden="true"><use href="#icone-busca"/></svg></button>
+                <button class="botao buscar-submit" type="submit"><span>Buscar</span> <svg class="icone" aria-hidden="true"><use href="#icone-busca"/></svg></button>
+                <div class="filtros-opcoes" id="filtros-opcoes">
+                    <h3>Filtros</h3>
+                    <label class="sr-only" for="categoria">Gênero</label><select id="categoria" name="categoria"><option value="">Gênero</option></select>
+                    <label class="sr-only" for="editora">Editora</label><select id="editora" name="editora"><option value="">Editora</option></select>
+                    <button class="botao aplicar-filtros" type="submit">Aplicar</button>
+                </div>
+                <button class="abrir-filtros botao" id="abrir-filtros" type="button" aria-label="Abrir filtros" aria-controls="filtros-opcoes" aria-expanded="false"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8v7l-4-2v-5Z"/></svg></button>
             </form>
             <div class="resultado-barra">
                 <p class="sr-only" id="resultados" role="status" aria-live="polite"></p>
@@ -103,52 +110,56 @@
         <p class="rodape-creditos">Mockup desenvolvido por EJECT</p>
     </footer>
 
+    <dialog class="modal modal-detalhe" id="modal-detalhe" aria-labelledby="detalhe-titulo">
+        <button class="fechar" type="button" data-fechar aria-label="Fechar informações">×</button>
+        <div id="detalhe-capa" class="detalhe-capa"></div>
+        <div class="detalhe-conteudo">
+            <h2 id="detalhe-titulo"></h2><p id="detalhe-autor" class="detalhe-autor"></p>
+            <p id="detalhe-resumo" class="detalhe-resumo"></p>
+            <p id="detalhe-paginas" class="detalhe-paginas"></p><p id="detalhe-editora" class="detalhe-editora"></p>
+            <button class="botao" id="editar-livro" type="button">Editar</button>
+        </div>
+    </dialog>
     <dialog class="modal modal-editor" id="modal-editor" aria-labelledby="editor-titulo">
         <button class="fechar" type="button" data-fechar aria-label="Fechar formulário">×</button>
+        <div class="editor-nav"><button type="button" class="editor-voltar" data-fechar aria-label="Voltar ao acervo"><img src="../assets/acervo/simbolo.svg" alt="" width="54" height="54"></button><span><img src="../assets/acervo/logo-nav.svg" alt="Theka" width="145" height="40"></span></div>
         <h2 id="editor-titulo">Adicionar material ao catálogo</h2>
         <form id="form-livro">
             <div class="editor-grade">
                 <div class="editor-capa">
                     <div id="capa-previa"></div>
-                    <label class="botao botao-contorno arquivo-botao" for="arquivo-capa">Escolher capa</label>
-                    <input class="arquivo-input" id="arquivo-capa" type="file" accept="image/png,image/jpeg,image/webp">
-                    <button class="link-botao" id="remover-capa" type="button" hidden>Remover imagem</button>
-                    <p class="dica">PNG, JPG ou WebP de até 500 KB.</p>
+                    <label class="botao botao-contorno arquivo-botao" for="arquivo-capa">Adicionar imagem</label>
+                    <input class="arquivo-input" id="arquivo-capa" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="erro-formulario">
                 </div>
                 <div class="editor-campos">
-                    <label class="campo campo-largo">Título do material
-                        <input id="livro-titulo" name="titulo" required maxlength="120">
+                    <label class="campo campo-titulo">Título do material:
+                        <input id="livro-titulo" name="titulo" required maxlength="120" placeholder="Título do material">
                     </label>
-                    <label class="campo">Número de páginas
-                        <input id="livro-paginas" name="paginas" type="number" min="1" max="50000" step="1" required>
+                    <label class="campo campo-paginas">Número de páginas
+                        <input id="livro-paginas" name="paginas" type="number" min="1" max="50000" step="1" required placeholder="Número de páginas">
                     </label>
-                    <label class="campo"><span>ISBN <span class="opcional">(opcional)</span></span>
-                        <input id="livro-isbn" name="isbn" maxlength="25">
+                    <label class="campo campo-isbn">ISBN
+                        <input id="livro-isbn" name="isbn" maxlength="25" placeholder="ISBN">
                     </label>
-                    <label class="campo campo-largo">Autor
-                        <input id="livro-autor" name="autor" required maxlength="120">
+                    <label class="campo campo-autor">Autor:
+                        <input id="livro-autor" name="autor" required maxlength="120" placeholder="Nome do autor">
                     </label>
-                    <label class="campo">Ano de publicação
-                        <input id="livro-ano" name="ano" type="number" min="1" max="2100" step="1" required>
+                    <label class="campo campo-ano">Ano de publicação
+                        <input id="livro-ano" name="ano" type="number" min="1" max="2100" step="1" required placeholder="Ano de publicação">
                     </label>
-                    <label class="campo">Editora
-                        <input id="livro-editora" name="editora" required maxlength="80">
+                    <label class="campo campo-editora">Editora
+                        <input id="livro-editora" name="editora" required maxlength="80" placeholder="Editora">
                     </label>
-                    <label class="campo campo-inteiro">Categoria
-                        <input id="livro-categoria" name="categoria" required maxlength="60">
+                    <label class="campo campo-resumo">Resumo do material:
+                        <textarea id="livro-resumo" name="resumo" rows="4" required maxlength="2000" placeholder="Resumo do material"></textarea>
                     </label>
-                    <label class="campo campo-inteiro">Resumo do material
-                        <textarea id="livro-resumo" name="resumo" rows="4" required maxlength="2000"></textarea>
-                    </label>
+                    <div class="editor-acoes">
+                        <button class="botao botao-contorno excluir-livro" id="excluir-livro" type="button" hidden>Excluir</button>
+                        <div class="acoes"><button class="botao botao-contorno" id="cancelar-editor" type="button">Cancelar</button><button class="botao" id="salvar-livro" type="submit">Salvar</button></div>
+                    </div>
                 </div>
             </div>
             <p class="erro-formulario" id="erro-formulario" role="alert" hidden></p>
-            <div class="editor-acoes">
-                <div class="acoes">
-                    <button class="botao botao-contorno" id="cancelar-editor" type="button">Cancelar</button>
-                    <button class="botao" id="salvar-livro" type="submit">Salvar</button>
-                </div>
-            </div>
         </form>
     </dialog>
 

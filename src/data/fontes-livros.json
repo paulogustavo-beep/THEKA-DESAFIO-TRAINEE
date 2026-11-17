@@ -1,0 +1,105 @@
+[
+  {
+    "title": "Água fresca para as flores",
+    "sourceUrl": "https://loja.intrinseca.com.br/agua-fresca-para-as-flores/",
+    "coverSourceUrl": "https://loja.intrinseca.com.br/media/catalog/product/a/g/agua-fresca-para-flores-g.jpg",
+    "visualMatch": "Capa plana da mesma composição e cores da referência Figma; resolução253×365.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "Amor(es) verdadeiro(s)",
+    "sourceUrl": "https://www.companhiadasletras.com.br/9788584391677-amor-es--verdadeiro-s--1243/p",
+    "coverSourceUrl": "https://ciadasletras.vtexassets.com/arquivos/ids/191619/cdl-9788584391677.jpg?v=639192115096530000",
+    "visualMatch": "Mesma arte piscina verde,títulos laranja/branco. Imagemquadrada1024; área da capa x245,y128,w534,h768. Usar cropCSS documentado; preservar original.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "Daisy Jones & The Six",
+    "sourceUrl": "https://www.companhiadasletras.com.br/9788584391400-daisy-jones-and-the-six-7286/p",
+    "coverSourceUrl": "https://ciadasletras.vtexassets.com/arquivos/ids/191599/cdl-9788584391400.jpg?v=639192115079500000",
+    "visualMatch": "Mesma arte de rosto e título branco da referência. Imagemquadrada1024; área da capa x245,y128,w534,h768. Usar cropCSS documentado.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "Torto arado",
+    "sourceUrl": "https://todavialivros.com.br/livros/torto-arado",
+    "coverSourceUrl": "https://bv-04.bubblevault.com/3014f7e3-1662-45ba-8468-6fc29ba8b08c/5582b9bb-0654-ef11-ac6f-0606526c02ab/jpg/720x480/5582b9bb-0654-ef11-ac6f-0606526c02ab.jpg",
+    "visualMatch": "Arte e edição Todavia da capa. Fonte primária do projeto inscrito na BienalADG por Elisa von Randow/Alles Blau e Aline Bispo; foto frontal com margens e lombada, enquadramentoCSS exclui margens/lombada. Metadados confirmados na editora. Diferenças finas de enquadramento/reimpressão em relação ao pequeno screenshot Figma não podem ser descartadas.",
+    "summaryType": "Paráfrase da sinopse oficial",
+    "coverSourcePageUrl": "https://www.bienaladg.org.br/?action=ows:entries.details&e=158140&project_year=2024"
+  },
+  {
+    "title": "O conto da aia",
+    "sourceUrl": "https://rocco.com.br/produto/o-conto-da-aia-2/",
+    "coverSourceUrl": "https://rocco.com.br/wp-content/uploads/2022/12/9788532520661.jpg",
+    "visualMatch": "Mesma arte branca com mulher de vermelho e silhueta de touca da referência Figma. Fonte oficial fornece imagem quadrada500×500; enquadrar no card com object-fit:cover central.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "Os sete maridos de Evelyn Hugo",
+    "sourceUrl": "https://www.companhiadasletras.com.br/9788584391509-os-sete-maridos-de-evelyn-hugo-3202/p",
+    "coverSourceUrl": "https://ciadasletras.vtexassets.com/arquivos/ids/217859/capa-recolor2-9788584391509.jpg?v=639238600856900000",
+    "visualMatch": "Mesmo vestido verde e título rosa da referência. Imagem oficial atual é mockup quadrado1024×1024, com capa central aproximadamente x245..779,y128..897. Para preencher card com a capa: object-fit:cover; transform:scale(1.33); object-position:center; overflow:hidden no contêiner. Arte preservada sem editar arquivo.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "Em busca de mim",
+    "sourceUrl": "https://www.record.com.br/products/em-busca-de-mim/",
+    "publisherSourceUrl": "https://www.record.com.br/collections/viola-davis",
+    "coverSourceUrl": "https://www.record.com.br/cdn/shop/files/6dfcd9fc639af884ea5891dba49fbd22_548dd6bb-727a-4609-bed9-877bde51d187_1000x.jpg?v=1778323603",
+    "visualMatch": "Mesma capa com retrato cinza aproximado e título branco da referência. Arquivo oficial200×290.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "A biblioteca da meia-noite",
+    "sourceUrl": "https://www.record.com.br/products/a-biblioteca-da-meia-noite/",
+    "additionalSourceUrls": [
+      "https://www.record.com.br/collections/universo-da-meia-noite"
+    ],
+    "summaryType": "Paráfrase curta da sinopse oficial"
+  },
+  {
+    "title": "Nunca vi a chuva",
+    "sourceUrl": "https://www.record.com.br/products/nunca-vi-a-chuva/",
+    "additionalSourceUrls": [
+      "https://www.record.com.br/blogs/news/volp-fala-sobre-livro-que-surgiu-como-uma-carta-a-mae",
+      "https://www.record.com.br/collections/ficcao?page=120"
+    ],
+    "note": "A edição da capa Figma é Galera/Grupo Record; HarperCollins não é a editora desta edição.",
+    "summaryType": "Paráfrase curta da sinopse oficial"
+  },
+  {
+    "title": "Oração para desaparecer",
+    "sourceUrl": "https://www.companhiadasletras.com.br/9786559215706-oracao-para-desaparecer-3380/p",
+    "summaryType": "Paráfrase curta da sinopse oficial"
+  },
+  {
+    "title": "Garota, mulher, outras",
+    "sourceUrl": "https://www.companhiadasletras.com.br/9788535933819-garota--mulher--outras/p",
+    "summaryType": "Paráfrase curta da sinopse oficial"
+  },
+  {
+    "title": "A cabeça do santo",
+    "sourceUrl": "https://www.companhiadasletras.com.br/9788535923698-a-cabeca-do-santo-3137/p",
+    "note": "Ano2014 confirmado naeditora; Figma detalhestem2016, divergência interna da referência.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "Três",
+    "sourceUrl": "https://loja.intrinseca.com.br/tres/",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "O avesso da pele",
+    "sourceUrl": "https://www.companhiadasletras.com.br/livro/9788535933390/o-avesso-da-pele-vencedor-jabuti-2021",
+    "summaryType": "Paráfrase da sinopse oficial"
+  },
+  {
+    "title": "Canção para ninar menino grande",
+    "sourceUrl": "https://pallaseditora.com.br/produto/cancao-para-ninar-menino-grande/",
+    "yearSourceUrl": "https://pallaseditora.com.br/pallas-na-casa-porto/",
+    "pagesSourceUrl": "https://pub-mediabox-storage.rxweb-prd.com/exhibitor/document/exh-5cb7c7bb-1b45-40ab-b95b-a3f9f6bea6d1/1447dd10-6483-454c-a0ea-c13910c2942b.pdf",
+    "note": "Páginas confirmadas no Catálogo Geral Pallas; ano confirmado em notícia da própriaeditora.",
+    "summaryType": "Paráfrase da sinopse oficial"
+  }
+]

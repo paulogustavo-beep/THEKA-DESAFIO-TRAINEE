@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Theka</title>
+    <title>Login | Meu projeto do Theka</title>
     <link rel="stylesheet" href="../styles/login.css">
     <script src="../scripts/login.js" defer></script>
 </head>
@@ -16,7 +16,6 @@
                     <image href="../assets/images/auth-sapato.svg" x="-5.427" y="-9.999" width="329.981" height="414.029" />
                 </g>
             </svg>
-
             <svg class="auth-art auth-art--mobile" viewBox="0 0 393 420" aria-hidden="true" focusable="false">
                 <image href="../assets/images/auth-laco.svg" width="257.3422" height="375.2716" transform="matrix(-0.1717895 0.9851337 -0.9851337 -0.1717895 286.9014 64.4677)" />
                 <g transform="matrix(0.9851337 0.1717894 -0.1717894 0.9851337 238.3579 176.5891)">
@@ -25,40 +24,31 @@
                     </g>
                 </g>
             </svg>
-
             <img class="auth-logo" src="../assets/images/auth-logo.svg" alt="Theka" width="245" height="68">
         </section>
-
         <section class="auth-panel" aria-labelledby="titulo-pagina">
             <h1 class="auth-title" id="titulo-pagina">Login</h1>
-
             <form class="auth-form" data-formulario="login">
                 <div class="auth-field">
                     <label class="auth-label" for="email">E-mail</label>
                     <input class="auth-input" id="email" name="email" type="email" placeholder="seuemail@email.com" autocomplete="email" required>
                 </div>
-
                 <div class="auth-field">
                     <label class="auth-label" for="senha">Senha</label>
-
                     <div class="auth-password">
                         <input class="auth-input" id="senha" name="senha" type="password" placeholder="********" autocomplete="current-password" required>
-
                         <button class="auth-eye" type="button" data-mostrar-senha="senha" aria-label="Mostrar senha" aria-controls="senha" aria-pressed="false">
                             <img src="../assets/images/auth-olho.svg" alt="" width="24" height="24">
                         </button>
                     </div>
                 </div>
-
                 <nav class="auth-links" aria-label="Ajuda para acessar">
                     <a href="recuperar-senha.html">Esqueceu a senha?</a>
                     <a href="cadastro.html">Ainda não tem cadastro?</a>
                 </nav>
-
                 <div class="auth-actions">
                     <button class="auth-button" type="submit">Entrar</button>
                 </div>
-
                 <p class="auth-status" id="mensagem-formulario" role="status" aria-live="polite" hidden></p>
             </form>
         </section>

@@ -1,367 +1,343 @@
-(() => {
-    "use strict";
+import { livrosIniciais } from "../data/livros.js";
 
-    const $ = id => document.getElementById(id);
-    const CHAVE = "theka:acervo:desktop:v1";
-    const POR_PAGINA = 15;
-    const TEMAS = ["amarela", "azul", "verde", "rosa", "laranja", "roxa", "escura", "creme"];
-    const registrosAnteriores = [
-        ["A cabeça do santo", "Socorro Acioli", "Romance", "Companhia das Letras", 2016, 176],
-        ["Dom Casmurro", "Machado de Assis", "Romance", "Editora Exemplo A", 1899, 256],
-        ["O Cortiço", "Aluísio Azevedo", "Literatura brasileira", "Editora Exemplo B", 1890, 304],
-        ["Vidas Secas", "Graciliano Ramos", "Literatura brasileira", "Editora Exemplo A", 1938, 176],
-        ["Além do horizonte", "Autor de exemplo", "Aventura", "Editora Exemplo C", 2024, 240],
-        ["O jardim das palavras", "Autor de exemplo", "Poesia", "Editora Exemplo B", 2023, 128],
-        ["Atlas das estrelas", "Autor de exemplo", "Ciência", "Editora Exemplo C", 2025, 320],
-        ["A cidade de papel", "Autor de exemplo", "Fantasia", "Editora Exemplo A", 2022, 288],
-        ["Entre rios e memórias", "Autor de exemplo", "Romance", "Editora Exemplo B", 2024, 224],
-        ["Pequenas descobertas", "Autor de exemplo", "Ciência", "Editora Exemplo C", 2021, 192],
-        ["Cartas para amanhã", "Autor de exemplo", "Poesia", "Editora Exemplo A", 2025, 144],
-        ["O mapa do vento", "Autor de exemplo", "Aventura", "Editora Exemplo B", 2023, 272],
-        ["Quando o sol voltar", "Autor de exemplo", "Romance", "Editora Exemplo C", 2024, 208],
-        ["Um lugar entre nuvens", "Autor de exemplo", "Fantasia", "Editora Exemplo A", 2022, 352],
-        ["Caminhos do saber", "Autor de exemplo", "Ciência", "Editora Exemplo B", 2025, 264],
-        ["A última estação", "Autor de exemplo", "Aventura", "Editora Exemplo C", 2023, 296],
-        ["Palavras que florescem", "Autor de exemplo", "Poesia", "Editora Exemplo A", 2024, 112],
-        ["O segredo da biblioteca", "Autor de exemplo", "Fantasia", "Editora Exemplo B", 2025, 336]
-    ];
-    const exemplosAnteriores = registrosAnteriores.map((r, i) => ({
-        id: `demo-${i + 1}`,
-        titulo: r[0], autor: r[1], categoria: r[2], editora: r[3],
-        ano: r[4], paginas: r[5], isbn: "", capa: "", tema: TEMAS[i % TEMAS.length],
-        resumo: i === 0
-            ? "Um jovem viaja para a cidade de Candeia para cumprir um pedido de sua mãe: encontrar o pai desconhecido."
-            : "Registro demonstrativo para explorar as funções do acervo. Os dados desta edição são exemplos e podem ser alterados em Editar material."
+const $ = id => document.getElementById(id);
+const CHAVE = "theka:acervo:v2";
+const mobile = window.matchMedia("(max-width: 767px)");
+const normalizar = valor => String(valor).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+const criar = (tag, classe, conteudo) => {
+    const elemento = document.createElement(tag);
+    if (classe) elemento.className = classe;
+    if (conteudo !== undefined) elemento.textContent = conteudo;
+    return elemento;
+};
+let temporario = false;
+let livros = carregar();
+let pagina = 1;
+let destaque = 0;
+let livroAberto = null;
+let livroEdicao = null;
+let capaEdicao = "";
+let lendoImagem = false;
+let versaoImagem = 0;
+let avisoTimer;
+let acionadorModal;
+
+function capaValida(valor) {
+    return typeof valor === "string" && (valor === "" || /^[a-z0-9-]+\.(png|jpg|webp)$/i.test(valor) ||
+        (valor.length < 700000 && /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(valor)));
+}
+function livroValido(livro) {
+    return livro && typeof livro.id === "string" && livro.id.length > 0 &&
+        typeof livro.titulo === "string" && livro.titulo.trim().length > 0 && livro.titulo.length <= 120 &&
+        ["autor", "editora", "categoria", "isbn", "resumo"].every(campo => typeof livro[campo] === "string" && livro[campo].length <= 2000) &&
+        (livro.ano === null || Number.isInteger(livro.ano) && livro.ano > 0 && livro.ano <= 2100) &&
+        (livro.paginas === null || Number.isInteger(livro.paginas) && livro.paginas > 0 && livro.paginas <= 50000) && capaValida(livro.capa);
+}
+function carregar() {
+    try {
+        let salvo = localStorage.getItem(CHAVE);
+        let migrar = false;
+        if (salvo === null) {
+            // Preserva o acervo local de uma versão anterior, sem apagar os dados.
+            const anteriores = Object.keys(localStorage).filter(chave =>
+                chave !== CHAVE && chave.startsWith("theka:acervo:") && chave.endsWith(":v2"));
+            if (anteriores.length === 1) {
+                salvo = localStorage.getItem(anteriores[0]);
+                migrar = salvo !== null;
+            }
+        }
+        if (salvo === null) return livrosIniciais.map(livro => ({ ...livro }));
+        const dados = JSON.parse(salvo);
+        if (dados.versao !== 2 || !Array.isArray(dados.livros) || !dados.livros.every(livroValido) ||
+            new Set(dados.livros.map(livro => livro.id)).size !== dados.livros.length) throw new Error("Dados inválidos");
+        if (migrar) {
+            try { localStorage.setItem(CHAVE, salvo); }
+            catch { temporario = true; }
+        }
+        return dados.livros;
+    } catch {
+        temporario = true;
+        return livrosIniciais.map(livro => ({ ...livro }));
+    }
+}
+function gravar(proximos) {
+    if (!temporario) {
+        try { localStorage.setItem(CHAVE, JSON.stringify({ versao: 2, livros: proximos })); }
+        catch { throw new Error("Não foi possível salvar neste navegador. Tente usar uma imagem menor ou libere espaço de armazenamento."); }
+    }
+    livros = proximos;
+}
+function notificar(acao) {
+    $("notificacao").textContent = `${acao} ${temporario ? "Alteração mantida somente nesta sessão." : "Alteração salva neste navegador."}`;
+    $("notificacao").hidden = false;
+    clearTimeout(avisoTimer);
+    avisoTimer = setTimeout(() => { $("notificacao").hidden = true; }, 5500);
+}
+function erro(mensagem = "") {
+    $("erro-formulario").textContent = mensagem;
+    $("erro-formulario").hidden = !mensagem;
+}
+function criarCapa(livro) {
+    const capa = criar("div", "capa");
+    capa.setAttribute("aria-hidden", "true");
+    if (livro.capa) {
+        const imagem = criar("img");
+        imagem.src = livro.capa.startsWith("data:") ? livro.capa : `../assets/acervo/${livro.capa}`;
+        imagem.alt = "";
+        imagem.loading = "lazy";
+        imagem.addEventListener("error", () => { imagem.remove(); capa.append(criar("span", "capa-titulo", livro.titulo)); }, { once: true });
+        capa.append(imagem);
+    } else capa.append(criar("span", "capa-titulo", livro.titulo));
+    return capa;
+}
+function preencherFiltros() {
+    for (const campo of ["categoria", "editora"]) {
+        const seletor = $(campo);
+        const anterior = seletor.value;
+        const opcoes = [...new Set(livros.map(livro => livro[campo]).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+        seletor.replaceChildren(new Option(campo === "categoria" ? "Gênero" : "Editora", ""));
+        opcoes.forEach(valor => seletor.add(new Option(valor, valor)));
+        if (livros.some(livro => !livro[campo])) seletor.add(new Option("Não informado", "__nao_informado"));
+        if ([...seletor.options].some(opcao => opcao.value === anterior)) seletor.value = anterior;
+    }
+}
+function filtrados() {
+    const termo = normalizar($("busca").value);
+    return livros.filter(livro => (!termo || normalizar(`${livro.titulo} ${livro.autor}`).includes(termo)) &&
+        ["categoria", "editora"].every(campo => !$(campo).value || ($(campo).value === "__nao_informado" ? !livro[campo] : livro[campo] === $(campo).value)));
+}
+function renderizarCatalogo() {
+    const lista = filtrados();
+    const porPagina = mobile.matches ? 8 : 15;
+    const total = Math.max(1, Math.ceil(lista.length / porPagina));
+    pagina = Math.min(Math.max(1, pagina), total);
+    const inicio = (pagina - 1) * porPagina;
+    $("grade-livros").replaceChildren(...lista.slice(inicio, inicio + porPagina).map(livro => {
+        const artigo = criar("article", "livro");
+        const botao = criar("button", "livro-capa");
+        botao.type = "button";
+        botao.setAttribute("aria-label", `Ver informações de ${livro.titulo}`);
+        botao.append(criarCapa(livro));
+        botao.addEventListener("click", () => abrirDetalhe(livro.id));
+        artigo.append(botao);
+        return artigo;
     }));
-    const exemplosNumerados = exemplosAnteriores.map((livro, i) => ({
-        ...livro,
-        titulo: `Exemplo ${i + 1}`,
-        autor: "Autor de exemplo",
-        resumo: `Este é o resumo do Exemplo ${i + 1}, usado para demonstrar o funcionamento do acervo.`
-    }));
-    const exemplos = exemplosNumerados.map((livro, i) => {
-        const titulo = i === 4 ? "exwmplo 5" : `exemplo ${i + 1}`;
-        return {
-            ...livro,
-            titulo,
-            resumo: `Este é o resumo do ${titulo}, usado para demonstrar o funcionamento do acervo.`
-        };
+    $("resultados").textContent = lista.length ? `Exibindo ${inicio + 1}–${Math.min(inicio + porPagina, lista.length)} de ${lista.length} livros` : "Nenhum livro encontrado";
+    $("vazio").hidden = lista.length > 0;
+    $("grade-livros").hidden = lista.length === 0;
+    $("adicionar").classList.toggle("sem-resultados", lista.length === 0);
+    $("limpar-busca").hidden = !$("busca").value && !$("categoria").value && !$("editora").value;
+    const nav = $("paginacao");
+    nav.replaceChildren();
+    nav.hidden = lista.length === 0;
+    function adicionarPagina(numero, rotulo, classe, desativado = false) {
+        const botao = criar("button", classe, rotulo);
+        botao.type = "button";
+        botao.disabled = desativado;
+        botao.setAttribute("aria-label", classe === "pagina" ? `Página ${numero}` : rotulo === "‹" ? "Página anterior" : "Próxima página");
+        if (classe === "pagina" && numero === pagina) botao.setAttribute("aria-current", "page");
+        botao.addEventListener("click", () => {
+            pagina = numero;
+            renderizarCatalogo();
+            $("catalogo").scrollIntoView({ block: "start" });
+            nav.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });
+        });
+        nav.append(botao);
+    }
+    adicionarPagina(pagina - 1, "‹", "seta", pagina === 1);
+    const primeira = Math.max(1, Math.min(pagina - 1, total - 2));
+    for (let numero = primeira; numero <= Math.min(total, primeira + 2); numero++) adicionarPagina(numero, String(numero), "pagina");
+    adicionarPagina(pagina + 1, "›", "seta", pagina === total);
+}
+function livrosEmDestaque() {
+    const ordem = ["figma-1", "figma-3", "figma-4", "figma-5", "figma-2"];
+    const originais = ordem.map(id => livros.find(livro => livro.id === id)).filter(Boolean);
+    return [...originais, ...livros.filter(livro => !ordem.includes(livro.id))].slice(0, 5);
+}
+function selecionarDestaque(indice) {
+    const lista = livrosEmDestaque();
+    destaque = indice;
+    const livro = lista[indice];
+    $("destaque-titulo").textContent = livro?.titulo || "";
+    $("destaque-autor").textContent = livro ? [livro.autor, livro.anoDestaque || livro.ano].filter(Boolean).join(" - ") : "";
+    $("destaque-livros").querySelectorAll("button").forEach((botao, i) => {
+        botao.classList.toggle("ativo", i === indice);
+        botao.setAttribute("aria-expanded", String(i === indice));
     });
-
-    let armazenamento = "local";
-    let livros = carregar();
-    let pagina = 1;
-    let destaque = 0;
-    let capaEdicao = "";
-    let temaEdicao = "amarela";
-    let versaoImagem = 0;
-    let lendoImagem = false;
-    let avisoTimer;
-    const normalizar = texto => String(texto).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-    const autorVisivel = livro => normalizar(livro.autor) === "autor de exemplo" ? "" : livro.autor;
-    const texto = (id, valor) => { $(id).textContent = valor; };
-    const criar = (tag, classe, conteudo) => {
-        const elemento = document.createElement(tag);
-        if (classe) elemento.className = classe;
-        if (conteudo !== undefined) elemento.textContent = conteudo;
-        return elemento;
+}
+function renderizarDestaques() {
+    const lista = livrosEmDestaque();
+    destaque = Math.min(destaque, Math.max(0, lista.length - 1));
+    $("destaque-livros").replaceChildren(...lista.map((livro, i) => {
+        const botao = criar("button", "destaque-livro");
+        botao.type = "button";
+        botao.setAttribute("aria-label", `Destacar e ver ${livro.titulo}`);
+        botao.append(criarCapa(livro));
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        const uso = document.createElementNS("http://www.w3.org/2000/svg", "use");
+        svg.classList.add("icone", "destaque-abrir");
+        svg.setAttribute("aria-hidden", "true");
+        uso.setAttribute("href", "#icone-seta"); svg.append(uso); botao.append(svg);
+        botao.addEventListener("click", () => { if (destaque === i) abrirDetalhe(livro.id); else selecionarDestaque(i); });
+        botao.addEventListener("pointerenter", evento => { if (evento.pointerType === "mouse") selecionarDestaque(i); });
+        return botao;
+    }));
+    $("destaque-livros").hidden = lista.length === 0;
+    selecionarDestaque(destaque);
+}
+function atualizar() { preencherFiltros(); renderizarCatalogo(); renderizarDestaques(); }
+function filtrar() { pagina = 1; renderizarCatalogo(); }
+function fecharFiltros() { $("filtros-opcoes").classList.remove("aberto"); $("abrir-filtros").setAttribute("aria-expanded", "false"); }
+function limparBusca() { $("form-busca").reset(); filtrar(); $("busca").focus({ preventScroll: true }); }
+function abrirModal(modal) {
+    if (!document.querySelector("dialog[open]")) acionadorModal = document.activeElement;
+    document.querySelectorAll("dialog[open]").forEach(aberto => aberto.close());
+    modal.showModal();
+}
+function fecharModal(modal) {
+    versaoImagem++;
+    lendoImagem = false;
+    modal.close();
+    const destino = acionadorModal?.isConnected ? acionadorModal : $("adicionar");
+    destino?.focus({ preventScroll: true });
+}
+function abrirDetalhe(id) {
+    const livro = livros.find(item => item.id === id);
+    if (!livro) return;
+    livroAberto = id;
+    $("detalhe-capa").replaceChildren(criarCapa(livro));
+    $("detalhe-titulo").textContent = livro.titulo;
+    $("detalhe-autor").textContent = [livro.autor, livro.ano].filter(Boolean).join(", ") || "Autor e ano não informados";
+    $("detalhe-resumo").textContent = livro.resumo || "Resumo não informado.";
+    $("detalhe-paginas").textContent = `páginas: ${livro.paginas || "não informado"}`;
+    $("detalhe-editora").textContent = livro.editora || "Editora não informada";
+    abrirModal($("modal-detalhe"));
+}
+function atualizarPrevia() {
+    const anterior = $("capa-previa");
+    anterior.replaceChildren();
+    if (capaEdicao) anterior.append(criarCapa({ titulo: $("livro-titulo").value, capa: capaEdicao }));
+    else {
+        const vazio = criar("div", "capa-vazia");
+        vazio.innerHTML = '<svg class="icone" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="12" width="48" height="40" rx="4"/><circle cx="23" cy="25" r="5"/><path d="m9 46 16-13 10 8 9-10 11 15"/></svg>';
+        anterior.append(vazio);
+    }
+    anterior.parentElement.classList.toggle("com-imagem", Boolean(capaEdicao));
+    document.querySelector(".arquivo-botao").textContent = capaEdicao ? "Alterar imagem" : "Adicionar imagem";
+}
+function abrirEditor(id = null) {
+    livroEdicao = id;
+    const livro = livros.find(item => item.id === id);
+    versaoImagem++;
+    lendoImagem = false;
+    $("salvar-livro").disabled = false;
+    $("form-livro").reset();
+    $("form-livro").querySelectorAll("input,textarea").forEach(campo => campo.setCustomValidity(""));
+    for (const campo of ["titulo", "autor", "ano", "paginas", "editora", "isbn", "resumo"]) $("livro-" + campo).value = livro?.[campo] ?? "";
+    capaEdicao = livro?.capa || "";
+    $("editor-titulo").textContent = livro ? "Editar material" : "Adicionar material ao catálogo";
+    $("excluir-livro").hidden = !livro;
+    erro(); atualizarPrevia(); abrirModal($("modal-editor"));
+}
+$("form-livro").addEventListener("submit", evento => {
+    evento.preventDefault();
+    if (lendoImagem) return;
+    for (const campo of ["titulo", "autor", "editora", "resumo"]) {
+        const input = $("livro-" + campo);
+        input.value = input.value.trim();
+        input.setCustomValidity(input.value ? "" : "Preencha este campo.");
+    }
+    const isbn = $("livro-isbn").value.replace(/[\s-]/g, "").toUpperCase();
+    $("livro-isbn").setCustomValidity(!isbn || /^(\d{9}[\dX]|\d{13})$/.test(isbn) ? "" : "Informe um ISBN com 10 ou 13 caracteres, ou deixe o campo vazio.");
+    if (!evento.currentTarget.reportValidity()) return;
+    if (!capaEdicao) { erro("Adicione a imagem da capa antes de salvar."); $("arquivo-capa").focus(); return; }
+    const anterior = livros.find(livro => livro.id === livroEdicao);
+    const livro = {
+        id: livroEdicao || `livro-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+        titulo: $("livro-titulo").value, autor: $("livro-autor").value, ano: Number($("livro-ano").value),
+        paginas: Number($("livro-paginas").value), editora: $("livro-editora").value,
+        isbn, resumo: $("livro-resumo").value, categoria: anterior?.categoria || "", capa: capaEdicao
     };
-
-    function capaValida(capa) {
-        return typeof capa === "string" && (capa === "" ||
-            (capa.length <= 700000 && /^data:image\/(png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(capa)));
+    try {
+        if (!livroValido(livro)) throw new Error("Confira os dados do material antes de salvar.");
+        gravar(livroEdicao ? livros.map(item => item.id === livroEdicao ? livro : item) : [livro, ...livros]);
+        $("form-busca").reset(); pagina = 1;
+        atualizar(); fecharModal($("modal-editor"));
+        notificar(livroEdicao ? "Material atualizado." : "Material adicionado.");
+    } catch (falha) { erro(falha.message); }
+});
+$("form-livro").addEventListener("input", evento => { evento.target.setCustomValidity?.(""); erro(); });
+$("arquivo-capa").addEventListener("change", async evento => {
+    const arquivo = evento.target.files[0];
+    if (!arquivo) return;
+    const versao = ++versaoImagem;
+    lendoImagem = false; $("salvar-livro").disabled = false;
+    erro();
+    if (!["image/png", "image/jpeg", "image/webp"].includes(arquivo.type) || arquivo.size > 500 * 1024) {
+        erro("Escolha uma imagem PNG, JPG ou WebP de até 500 KB."); evento.target.value = ""; return;
     }
-    function livroValido(livro) {
-        return livro && ["id", "titulo", "autor", "categoria", "editora", "resumo"].every(chave =>
-            typeof livro[chave] === "string" && livro[chave].trim().length > 0 && livro[chave].length <= 2000
-        ) && typeof livro.isbn === "string" && TEMAS.includes(livro.tema) && capaValida(livro.capa) &&
-            Number.isInteger(livro.paginas) && livro.paginas > 0 && livro.paginas <= 50000 &&
-            Number.isInteger(livro.ano) && livro.ano > 0 && livro.ano <= 2100;
-    }
-    function atualizarExemplosAntigos(lista) {
-        return lista.map(livro => {
-            const indice = exemplosAnteriores.findIndex(exemplo => exemplo.id === livro.id);
-            if (indice < 0) return livro;
-            const anterior = exemplosAnteriores[indice];
-            const numerado = exemplosNumerados[indice];
-            const novo = exemplos[indice];
-            const atualizado = { ...livro };
-            ["titulo", "autor", "resumo"].forEach(campo => {
-                if (livro[campo] === anterior[campo] || livro[campo] === numerado[campo]) {
-                    atualizado[campo] = novo[campo];
-                }
-            });
-            return atualizado;
+    lendoImagem = true; $("salvar-livro").disabled = true;
+    try {
+        const data = await new Promise((resolve, reject) => {
+            const leitor = new FileReader();
+            leitor.onload = () => resolve(leitor.result);
+            leitor.onerror = () => reject(new Error("Falha ao ler a imagem"));
+            leitor.readAsDataURL(arquivo);
         });
-    }
-    function carregar() {
-        try {
-            const salvo = localStorage.getItem(CHAVE);
-            if (salvo === null) return exemplos.map(livro => ({ ...livro }));
-            const dados = JSON.parse(salvo);
-            if (dados.versao !== 1 || !Array.isArray(dados.livros) || !dados.livros.every(livroValido) ||
-                new Set(dados.livros.map(livro => livro.id)).size !== dados.livros.length) {
-                throw new Error("Dados locais inválidos");
-            }
-            return dados.versaoExemplos === 2 ? dados.livros : atualizarExemplosAntigos(dados.livros);
-        } catch {
-            armazenamento = "temporario";
-            return exemplos.map(livro => ({ ...livro }));
-        }
-    }
-    function gravar(proximos) {
-        if (armazenamento === "local") {
-            try {
-                localStorage.setItem(CHAVE, JSON.stringify({ versao: 1, exemplosNumerados: true, versaoExemplos: 2, livros: proximos }));
-            } catch {
-                throw new Error("Não foi possível salvar neste navegador. Tente usar uma imagem de capa menor.");
-            }
-        }
-        livros = proximos;
-    }
-    function notificar(acao) {
-        texto("notificacao", `${acao} ${armazenamento === "local" ? "Alteração salva neste navegador." : "Alteração mantida somente até fechar esta página."}`);
-        $("notificacao").hidden = false;
-        clearTimeout(avisoTimer);
-        avisoTimer = setTimeout(() => { $("notificacao").hidden = true; }, 5500);
-    }
-    function erro(id, mensagem = "") {
-        texto(id, mensagem);
-        $(id).hidden = !mensagem;
-    }
-
-    function criarCapa(livro) {
-        const capa = criar("div", `capa capa-${livro.tema}`);
-        capa.setAttribute("aria-hidden", "true");
-        capa.style.justifyContent = "center";
-        capa.append(criar("span", "capa-titulo", livro.titulo));
-        if (livro.capa) {
-            const imagem = criar("img");
-            imagem.src = livro.capa;
-            imagem.alt = "";
-            imagem.addEventListener("error", () => imagem.remove(), { once: true });
-            capa.append(imagem);
-        }
-        return capa;
-    }
-    function filtrados() {
-        const termo = normalizar($("busca").value);
-        return livros.filter(livro =>
-            !termo || normalizar(`${livro.titulo} ${livro.autor}`).includes(termo)
-        );
-    }
-    function renderizarCatalogo() {
-        const lista = filtrados();
-        const total = Math.max(1, Math.ceil(lista.length / POR_PAGINA));
-        pagina = Math.min(Math.max(1, pagina), total);
-        const inicio = (pagina - 1) * POR_PAGINA;
-        $("grade-livros").replaceChildren(...lista.slice(inicio, inicio + POR_PAGINA).map(livro => {
-            const artigo = criar("article", "livro");
-            const capa = criar("div", "livro-capa");
-            capa.setAttribute("role", "img");
-            capa.setAttribute("aria-label", `Capa de ${livro.titulo}`);
-            capa.append(criarCapa(livro));
-            artigo.append(capa);
-            return artigo;
-        }));
-        texto("resultados", lista.length ? `Exibindo ${inicio + 1}–${Math.min(inicio + POR_PAGINA, lista.length)} de ${lista.length} ${lista.length === 1 ? "livro" : "livros"}` : "Nenhum livro encontrado");
-        $("vazio").hidden = lista.length > 0;
-        $("grade-livros").hidden = lista.length === 0;
-        $("adicionar").classList.toggle("sem-resultados", lista.length === 0);
-        $("limpar-busca").hidden = !$("busca").value;
-        const nav = $("paginacao");
-        nav.replaceChildren();
-        nav.hidden = lista.length === 0;
-        const adicionarPagina = (numero, rotulo, classe, desativado = false) => {
-            const botao = criar("button", classe, rotulo);
-            botao.type = "button";
-            botao.disabled = desativado;
-            botao.setAttribute("aria-label", classe === "pagina" ? `Página ${numero}` : rotulo === "←" ? "Página anterior" : "Próxima página");
-            if (classe === "pagina" && numero === pagina) botao.setAttribute("aria-current", "page");
-            botao.addEventListener("click", () => {
-                pagina = numero;
-                renderizarCatalogo();
-                $("catalogo").scrollIntoView({ block: "start" });
-                nav.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });
-            });
-            nav.append(botao);
-        };
-        adicionarPagina(pagina - 1, "←", "seta", pagina === 1);
-        const inicioPaginas = Math.max(1, Math.min(pagina - 1, total - 2));
-        for (let numero = inicioPaginas; numero <= Math.min(total, inicioPaginas + 2); numero++) {
-            adicionarPagina(numero, String(numero), "pagina");
-        }
-        adicionarPagina(pagina + 1, "→", "seta", pagina === total);
-    }
-    function selecionarDestaque(indice) {
-        const lista = livros.slice(0, 5);
-        destaque = indice;
-        const livro = lista[indice];
-        texto("destaque-titulo", livro?.titulo || "Seu acervo começa aqui");
-        texto("destaque-autor", livro ? [autorVisivel(livro), livro.ano].filter(Boolean).join(" - ") : "Adicione um material ao catálogo.");
-        $("destaque-livros").querySelectorAll("button").forEach((botao, i) => {
-            botao.classList.toggle("ativo", i === indice);
-            if (i === indice) botao.setAttribute("aria-current", "true");
-            else botao.removeAttribute("aria-current");
-        });
-    }
-    function renderizarDestaques() {
-        const lista = livros.slice(0, 5);
-        destaque = Math.min(destaque, Math.max(0, lista.length - 1));
-        $("destaque-livros").replaceChildren(...lista.map((livro, i) => {
-            const botao = criar("button", "destaque-livro");
-            botao.type = "button";
-            botao.setAttribute("aria-label", `Destacar ${livro.titulo}`);
-            botao.append(criarCapa(livro));
-            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            const uso = document.createElementNS("http://www.w3.org/2000/svg", "use");
-            svg.classList.add("icone", "destaque-abrir");
-            svg.setAttribute("aria-hidden", "true");
-            uso.setAttribute("href", "#icone-seta");
-            svg.append(uso);
-            botao.append(svg);
-            botao.addEventListener("click", () => selecionarDestaque(i));
-            botao.addEventListener("pointerenter", () => selecionarDestaque(i));
-            botao.addEventListener("focus", () => selecionarDestaque(i));
-            return botao;
-        }));
-        selecionarDestaque(destaque);
-    }
-    function atualizar() { renderizarCatalogo(); renderizarDestaques(); }
-    function filtrar() { pagina = 1; renderizarCatalogo(); }
-    function limparBusca() {
-        $("form-busca").reset();
-        filtrar();
-        $("busca").focus({ preventScroll: true });
-    }
-    function abrirModal(modal) {
-        document.querySelectorAll("dialog[open]").forEach(aberto => aberto.close());
-        modal.showModal();
-    }
-    function fecharModal(modal) {
-        modal.close();
-        if (document.activeElement === document.body) $("adicionar").focus({ preventScroll: true });
-    }
-    function atualizarPrevia() {
-        $("capa-previa").replaceChildren(criarCapa({ titulo: $("livro-titulo").value.trim() || "Seu novo livro", autor: $("livro-autor").value.trim() || "Nome do autor", tema: temaEdicao, capa: capaEdicao }));
-        $("remover-capa").hidden = !capaEdicao;
-    }
-    function abrirEditor() {
-        versaoImagem++;
-        lendoImagem = false;
-        $("salvar-livro").disabled = false;
-        $("form-livro").reset();
-        $("form-livro").querySelectorAll("input,textarea").forEach(campo => campo.setCustomValidity(""));
-        capaEdicao = "";
-        temaEdicao = TEMAS[livros.length % TEMAS.length];
-        erro("erro-formulario");
-        atualizarPrevia();
-        abrirModal($("modal-editor"));
-        $("livro-titulo").focus();
-    }
-    function cancelarEditor() {
-        versaoImagem++;
-        lendoImagem = false;
-        fecharModal($("modal-editor"));
-    }
-    function fechar(modal) {
-        if (modal.id === "modal-editor") cancelarEditor();
-        else fecharModal(modal);
-    }
-
-    $("form-livro").addEventListener("submit", evento => {
-        evento.preventDefault();
-        if (lendoImagem) return;
-        const form = evento.currentTarget;
-        ["titulo", "autor", "editora", "categoria", "resumo"].forEach(chave => {
-            const campo = $(`livro-${chave}`);
-            campo.value = campo.value.trim();
-            campo.setCustomValidity(campo.value ? "" : "Preencha este campo.");
-        });
-        const isbn = $("livro-isbn").value.replace(/[\s-]/g, "").toUpperCase();
-        $("livro-isbn").setCustomValidity(!isbn || /^(\d{9}[\dX]|\d{13})$/.test(isbn) ? "" : "Informe um ISBN com 10 ou 13 caracteres, ou deixe o campo vazio.");
-        if (!form.reportValidity()) return;
-        const livro = {
-            id: `livro-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
-            titulo: $("livro-titulo").value, autor: $("livro-autor").value,
-            categoria: $("livro-categoria").value, editora: $("livro-editora").value,
-            resumo: $("livro-resumo").value, ano: Number($("livro-ano").value),
-            paginas: Number($("livro-paginas").value), isbn, capa: capaEdicao, tema: temaEdicao
-        };
-        try {
-            if (!livroValido(livro)) throw new Error("Confira os dados do material antes de salvar.");
-            gravar([livro, ...livros]);
-            $("form-busca").reset();
-            pagina = 1;
-            destaque = 0;
-            fecharModal($("modal-editor"));
-            atualizar();
-            notificar("Material adicionado.");
-        } catch (falha) { erro("erro-formulario", falha.message); }
+        const imagem = new Image(); imagem.src = data; await imagem.decode();
+        if (versao !== versaoImagem || !$("modal-editor").open) return;
+        if (!capaValida(data)) throw new Error("Imagem inválida");
+        capaEdicao = data; atualizarPrevia();
+    } catch { if (versao === versaoImagem) erro("Não foi possível abrir essa imagem. Escolha outro arquivo."); }
+    finally { if (versao === versaoImagem) { lendoImagem = false; $("salvar-livro").disabled = false; } }
+});
+$("excluir-livro").addEventListener("click", () => {
+    try {
+        gravar(livros.filter(livro => livro.id !== livroEdicao));
+        atualizar(); fecharModal($("modal-editor")); notificar("Material excluído.");
+    } catch (falha) { erro(falha.message); }
+});
+$("adicionar").addEventListener("click", () => abrirEditor());
+$("editar-livro").addEventListener("click", () => abrirEditor(livroAberto));
+$("cancelar-editor").addEventListener("click", () => fecharModal($("modal-editor")));
+$("form-busca").addEventListener("submit", evento => { evento.preventDefault(); filtrar(); fecharFiltros(); });
+$("busca").addEventListener("input", filtrar);
+["categoria", "editora"].forEach(id => $(id).addEventListener("change", () => { if (!mobile.matches) filtrar(); }));
+["limpar-busca", "recomecar-busca"].forEach(id => $(id).addEventListener("click", limparBusca));
+$("abrir-filtros").addEventListener("click", () => {
+    const aberto = $("filtros-opcoes").classList.toggle("aberto");
+    $("abrir-filtros").setAttribute("aria-expanded", String(aberto));
+    if (aberto) $("categoria").focus();
+});
+// No celular, o formulário ocupa a página e conserva o rodapé do mockup.
+const rodapeEditor = document.querySelector(".rodape").cloneNode(true);
+rodapeEditor.classList.add("editor-rodape");
+rodapeEditor.removeAttribute("id");
+rodapeEditor.querySelectorAll("[id]").forEach(elemento => elemento.removeAttribute("id"));
+rodapeEditor.querySelectorAll("[aria-labelledby]").forEach(elemento => elemento.removeAttribute("aria-labelledby"));
+$("modal-editor").append(rodapeEditor);
+document.querySelectorAll("dialog").forEach(modal => {
+    modal.querySelectorAll("[data-fechar]").forEach(botao => botao.addEventListener("click", () => fecharModal(modal)));
+    modal.addEventListener("cancel", evento => { evento.preventDefault(); fecharModal(modal); });
+    modal.addEventListener("click", evento => {
+        const area = modal.getBoundingClientRect();
+        if (evento.target === modal && (evento.clientX < area.left || evento.clientX > area.right || evento.clientY < area.top || evento.clientY > area.bottom)) fecharModal(modal);
     });
-    $("form-livro").addEventListener("input", evento => {
-        evento.target.setCustomValidity?.("");
-        erro("erro-formulario");
-        if (["livro-titulo", "livro-autor"].includes(evento.target.id)) atualizarPrevia();
-    });
-    $("arquivo-capa").addEventListener("change", async evento => {
-        const arquivo = evento.target.files[0];
-        if (!arquivo) return;
-        const versao = ++versaoImagem;
-        lendoImagem = false;
-        $("salvar-livro").disabled = false;
-        erro("erro-formulario");
-        if (!["image/png", "image/jpeg", "image/webp"].includes(arquivo.type) || arquivo.size > 500 * 1024) {
-            erro("erro-formulario", "Escolha uma imagem PNG, JPG ou WebP de até 500 KB.");
-            evento.target.value = "";
-            return;
-        }
-        lendoImagem = true;
-        $("salvar-livro").disabled = true;
-        try {
-            const data = await new Promise((resolve, reject) => {
-                const leitor = new FileReader();
-                leitor.onload = () => resolve(leitor.result);
-                leitor.onerror = () => reject(new Error("Não foi possível ler a imagem."));
-                leitor.readAsDataURL(arquivo);
-            });
-            const imagem = new Image();
-            imagem.src = data;
-            await imagem.decode();
-            if (versao !== versaoImagem || !$("modal-editor").open) return;
-            if (!capaValida(data)) throw new Error("Imagem inválida.");
-            capaEdicao = data;
-            atualizarPrevia();
-        } catch {
-            if (versao === versaoImagem) erro("erro-formulario", "Não foi possível abrir essa imagem. Escolha outro arquivo.");
-        } finally {
-            if (versao === versaoImagem) { lendoImagem = false; $("salvar-livro").disabled = false; }
-        }
-    });
-    $("remover-capa").addEventListener("click", () => {
-        versaoImagem++;
-        lendoImagem = false;
-        $("salvar-livro").disabled = false;
-        capaEdicao = "";
-        $("arquivo-capa").value = "";
-        atualizarPrevia();
-    });
-    $("form-busca").addEventListener("submit", evento => { evento.preventDefault(); filtrar(); });
-    $("busca").addEventListener("input", filtrar);
-    ["limpar-busca", "recomecar-busca"].forEach(id => $(id).addEventListener("click", limparBusca));
-    $("adicionar").addEventListener("click", () => abrirEditor());
-    $("cancelar-editor").addEventListener("click", cancelarEditor);
-    document.querySelectorAll("dialog").forEach(modal => {
-        modal.querySelectorAll("[data-fechar]").forEach(botao => botao.addEventListener("click", () => fechar(modal)));
-        modal.addEventListener("cancel", evento => { evento.preventDefault(); fechar(modal); });
-        modal.addEventListener("click", evento => {
-            const area = modal.getBoundingClientRect();
-            if (evento.target === modal && (evento.clientX < area.left || evento.clientX > area.right || evento.clientY < area.top || evento.clientY > area.bottom)) fechar(modal);
-        });
-    });
-    if (armazenamento === "temporario") {
-        $("aviso-local").classList.remove("sr-only");
-        texto("aviso-local", "O armazenamento local não pôde ser carregado. Nesta sessão, as alterações serão mantidas somente até fechar ou atualizar esta página.");
+});
+const botaoMenu = document.querySelector(".nav-abrir");
+const menu = document.querySelector(".menu");
+botaoMenu.addEventListener("click", () => {
+    const aberto = menu.classList.toggle("aberto"); botaoMenu.setAttribute("aria-expanded", String(aberto));
+});
+document.addEventListener("keydown", evento => {
+    if (evento.key === "Escape") {
+        if ($("filtros-opcoes").classList.contains("aberto")) { fecharFiltros(); $("abrir-filtros").focus(); }
+        if (menu.classList.contains("aberto")) { menu.classList.remove("aberto"); botaoMenu.setAttribute("aria-expanded", "false"); botaoMenu.focus(); }
     }
-    atualizar();
-})();
+});
+mobile.addEventListener("change", () => { pagina = 1; fecharFiltros(); renderizarCatalogo(); });
+if (temporario) {
+    $("aviso-local").classList.remove("sr-only");
+    $("aviso-local").textContent = "O armazenamento deste navegador não está disponível. As alterações serão mantidas somente nesta sessão.";
+}
+atualizar();
