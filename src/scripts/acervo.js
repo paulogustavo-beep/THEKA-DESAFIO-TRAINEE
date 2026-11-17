@@ -122,7 +122,7 @@ function renderizarCatalogo() {
         artigo.append(botao);
         return artigo;
     }));
-    $("resultados").textContent = lista.length ? `Exibindo ${inicio + 1}–${Math.min(inicio + porPagina, lista.length)} de ${lista.length} livros` : "Nenhum livro encontrado";
+    $("resultados").textContent = lista.length ? `Exibindo ${inicio + 1}–${Math.min(inicio + porPagina, lista.length)} de ${lista.length} ${lista.length === 1 ? "livro" : "livros"}` : "Nenhum livro encontrado";
     $("vazio").hidden = lista.length > 0;
     $("grade-livros").hidden = lista.length === 0;
     $("adicionar").classList.toggle("sem-resultados", lista.length === 0);
@@ -233,7 +233,7 @@ function abrirEditor(id = null) {
     $("salvar-livro").disabled = false;
     $("form-livro").reset();
     $("form-livro").querySelectorAll("input,textarea").forEach(campo => campo.setCustomValidity(""));
-    for (const campo of ["titulo", "autor", "ano", "paginas", "editora", "isbn", "resumo"]) $("livro-" + campo).value = livro?.[campo] ?? "";
+    for (const campo of ["titulo", "autor", "ano", "paginas", "editora", "categoria", "isbn", "resumo"]) $("livro-" + campo).value = livro?.[campo] ?? "";
     capaEdicao = livro?.capa || "";
     $("editor-titulo").textContent = livro ? "Editar material" : "Adicionar material ao catálogo";
     $("excluir-livro").hidden = !livro;
@@ -242,7 +242,7 @@ function abrirEditor(id = null) {
 $("form-livro").addEventListener("submit", evento => {
     evento.preventDefault();
     if (lendoImagem) return;
-    for (const campo of ["titulo", "autor", "editora", "resumo"]) {
+    for (const campo of ["titulo", "autor", "editora", "categoria", "resumo"]) {
         const input = $("livro-" + campo);
         input.value = input.value.trim();
         input.setCustomValidity(input.value ? "" : "Preencha este campo.");
@@ -253,11 +253,13 @@ $("form-livro").addEventListener("submit", evento => {
     if (!capaEdicao) { erro("Adicione a imagem da capa antes de salvar."); $("arquivo-capa").focus(); return; }
     const anterior = livros.find(livro => livro.id === livroEdicao);
     const livro = {
+        ...anterior,
         id: livroEdicao || `livro-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
         titulo: $("livro-titulo").value, autor: $("livro-autor").value, ano: Number($("livro-ano").value),
         paginas: Number($("livro-paginas").value), editora: $("livro-editora").value,
-        isbn, resumo: $("livro-resumo").value, categoria: anterior?.categoria || "", capa: capaEdicao
+        isbn, resumo: $("livro-resumo").value, categoria: $("livro-categoria").value, capa: capaEdicao
     };
+    if (anterior && anterior.ano !== livro.ano) delete livro.anoDestaque;
     try {
         if (!livroValido(livro)) throw new Error("Confira os dados do material antes de salvar.");
         gravar(livroEdicao ? livros.map(item => item.id === livroEdicao ? livro : item) : [livro, ...livros]);

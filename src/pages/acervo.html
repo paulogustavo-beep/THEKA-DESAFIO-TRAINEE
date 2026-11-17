@@ -57,7 +57,7 @@
                     <span class="sr-only">Pesquisar por título ou autor</span>
                     <input id="busca" type="search" placeholder="Fazer busca" autocomplete="off" maxlength="180">
                 </label>
-                <button class="botao buscar-submit" type="submit"><span>Buscar</span> <svg class="icone" aria-hidden="true"><use href="#icone-busca"/></svg></button>
+                <button class="botao buscar-submit" type="submit" aria-label="Buscar livros"><span>Buscar</span> <svg class="icone" aria-hidden="true"><use href="#icone-busca"/></svg></button>
                 <div class="filtros-opcoes" id="filtros-opcoes">
                     <h3>Filtros</h3>
                     <label class="sr-only" for="categoria">Gênero</label><select id="categoria" name="categoria"><option value="">Gênero</option></select>
@@ -149,6 +149,9 @@
                     </label>
                     <label class="campo campo-editora">Editora
                         <input id="livro-editora" name="editora" required maxlength="80" placeholder="Editora">
+                    </label>
+                    <label class="campo campo-categoria">Gênero:
+                        <input id="livro-categoria" name="categoria" required maxlength="80" placeholder="Gênero do livro">
                     </label>
                     <label class="campo campo-resumo">Resumo do material:
                         <textarea id="livro-resumo" name="resumo" rows="4" required maxlength="2000" placeholder="Resumo do material"></textarea>

@@ -168,7 +168,7 @@ h1 { color: var(--rosa); font-size: calc(96 * var(--u)); line-height: calc(100 *
 .campo input::placeholder, .campo textarea::placeholder { color: #a86787; opacity: 1; }
 .campo-editora input { height: 44px; }
 .campo textarea { height: 133px; resize: vertical; border-radius: 20px; line-height: 20px; }
-.campo-resumo { grid-column: 1 / -1; }
+.campo-categoria, .campo-resumo { grid-column: 1 / -1; }
 .editor-acoes { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 16px; margin-top: 9px; }
 .editor-acoes .botao { min-width: 112px; font-size: 16px; font-weight: 400; }
 .editor-acoes #salvar-livro { min-width: 124px; }
@@ -176,6 +176,18 @@ h1 { color: var(--rosa); font-size: calc(96 * var(--u)); line-height: calc(100 *
 .notificacao { position: fixed; z-index: 20; left: 50%; bottom: 24px; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 32px); padding: 15px 24px; border-radius: 12px; background: #2d3830; color: white; box-shadow: 0 6px 20px #0003; font-size: 14px; }
 .sem-js { padding: 25px; text-align: center; color: #a22435; }
 @media (min-width: 768px) and (max-width: 1150px) {
+    .filtros { display: grid; grid-template-columns: minmax(0, 1fr) 110px; gap: 12px; width: 100%; height: auto; padding: 16px 20px; border-width: 2px; border-radius: 30px; }
+    .busca input { height: 44px; font-size: 18px; }
+    .buscar-submit { order: 0; width: 110px; height: 44px; margin-left: 0; font-size: 16px; }
+    .buscar-submit .icone { width: 24px; height: 24px; }
+    .filtros-opcoes { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .filtros-opcoes select { width: 100%; height: 44px; padding: 0 16px; border-width: 1.5px; border-radius: 30px; font-size: 14px; }
+    .destaque-autor { font-size: 14px; }
+    .adicionar-livro { width: 54px; height: 44px; font-size: 32px; }
+    .rodape-conteudo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .rodape-marca > p, .rodape-linha, .rodape-creditos { font-size: 14px; }
+    .rodape h2 { font-size: 28px; line-height: 1.3; }
+    .rodape-linha .icone { width: 20px; height: 20px; }
     .modal-editor { padding: 35px; }
     .editor-grade { grid-template-columns: 190px minmax(0,1fr); gap: 24px; }
     .editor-capa, .editor-capa .capa { width: 190px; height: 278px; min-height: 278px; }

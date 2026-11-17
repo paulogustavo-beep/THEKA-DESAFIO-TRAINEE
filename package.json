@@ -1,13 +1,15 @@
 {
-  "name": "modelo_trainee_javascript_vite",
+  "name": "meu-projeto-do-theka",
   "version": "1.0.0",
-  "description": "> [DESCRIÇÃO SIMPLES]",
-  "main": "script.js",
+  "private": true,
+  "description": "Meu projeto do Theka — acervo virtual em HTML, CSS e JavaScript.",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node tools/servidor.mjs",
+    "check": "node tools/verificar.mjs",
+    "test": "node tools/verificar.mjs"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
+  "engines": {
+    "node": ">=20"
+  }
 }
