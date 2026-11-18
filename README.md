@@ -1,54 +1,103 @@
-# [NOME DO PROJETO]
-> [DESCRIÇÃO SIMPLES]
+# Theka
 
-## 📋 Sobre o Projeto
+Esse é o meu projeto do desafio de Front-end do Trainee 2026.2 da EJECT, na trilha de JavaScript, a proposta é desenvolver o site de uma biblioteca chamada Theka, seguindo as telas no Figma
 
-[descrição detalhada do projeto]
+Estou aprendendo desenvolvimento web e usando esse projeto para colocar os estudos na prática, ele reúne a parte visual das páginas, as interações com JavaScript e a comunicação com a API
 
-## 🚀 Tecnologias Utilizadas
+## O que tem no projeto
 
-### Core
+- Login e cadastro de usuário
+- Páginas para recuperar e redefinir a senha
+- Acervo com capas dos livros, carrossel e paginação
+- Pesquisa por título ou autor
+- Filtros por gênero e editora
+- Janela com os detalhes de cada livro
+- Opções para adicionar, editar e excluir livros
+- Página Sobre Nós, com história, valores e equipe da Theka
+- Ajustes no layout para diferentes tamanhos de tela
 
-- **HTML** - Linguagem de Marcação
-- **CSS** - Linguagem de Estilos
-- **JavaScript** - Linguagem de Programação
 
-### Utilitários
+## O que usei
 
-- **[nome da biblioteca]** - [descrição da biblioteca]
+Usei ***HTML** para montar as páginas, **CSS** para os estilos e **JavaScript** para as funcionalidades. No CSS, usei ****Flexbox**, Grid e media queries para organizar os elementos e adaptar as telas
 
-## ▶️ Como Rodar o Projeto
+As requisições à API são feitas com `fetch`. Também usei `localStorage` para guardar as alterações dos livros no navegador e `sessionStorage` para guardar o token recebido no login
+
+O Figma é a referência do layout, e o GitHub é usado para guardar o código e acompanhar as alterações, o projeto também tem um servidor local e comandos de verificação que usam Node.js
+
+## Como abrir o projeto
+
+É preciso ter o **Node.js** instalado, com o npm
+
+Para baixar pelo Git:
 
 ```bash
-npm install     # instala as dependências
-npm run dev     # servidor de desenvolvimento
+git clone https://github.com/paulogustavo-beep/THEKA-DESAFIO-TRAINEE.git
+cd THEKA-DESAFIO-TRAINEE
 ```
 
-## 📁 Estrutura do Projeto
+Depois de baixar o projeto, pode abrir a pasta no VSCode e usar o terminal
+O terminal precisa estar na pasta onde está o arquivo `package.json`
 
-```
-[NOME DO PROJETO]
-├── node_modules/          # Arquivo de dependências do npm
-├── public/                # Arquivos servidos como estão (ex.: favicon)
-├── src/                   # Código-fonte da aplicação
-│   ├── assets/            # Arquivos de mídia (logos, ilustrações, fotos)
-│   │   ├── icons/         # Ícones em SVG
-│   │   └── images/        # Imagens (logos, ilustrações, fotos)
-│   ├── pages/             # Onde ficam as páginas HTML do projeto 
-│   ├── scripts/           # Pasta contendo todos os arquivos de script
-│   ├── styles/            # CSS (um arquivo por página ou componente)
-│   └── script.js          # Ponto de entrada do JavaScript
-│   └── style.css          # Arquivo de estilização global
-├── index.html             # Página HTML principal do projeto
-├── .gitignore             # Arquivos ignorados pelo Git
-├── package.json           # Dependências e scripts
-└── README.md              # Documentação do projeto
+Depois, execute:
+
+```bash
+npm run dev
 ```
 
-Cada pasta de desenvolvimento tem um documento `.md` com o nome dela explicando para que serve e o que colocar ali (ex.: `src/styles/styles.md`).
+Abra a pasta do projeto no VS Code e instale a extensão Live Server, de Ritwick Dey.
 
-## 👤 Desenvolvedor
+Depois, clique com o botão direito no arquivo `src/pages/login.html` da pasta principal, e escolha **Open with Live Server**, o projeto vai abrir no navegador, na página do acervo.
 
-- [nome do membro]
+Para abrir qualquer tela de login, faça o mesmo com os arquivos `src/pages/login.html`
 
-© **EJECT**
+
+## Como organizei os arquivos
+
+Separei as páginas, os estilos e os scripts para facilitar a localização de cada parte do projeto
+
+| Pasta ou arquivo | O que fica nele |
+| --- | --- |
+| `index.html` | Página de entrada, que encaminha para o acervo |
+| `src/pages/` | Os arquivos HTML das páginas |
+| `src/styles/` | Os arquivos CSS |
+| `src/scripts/` | O JavaScript das funcionalidades e das chamadas à API |
+| `src/data/` | Os dados iniciais dos livros e as referências das fontes |
+| `src/assets/` | As imagens, capas e fontes usadas no site |
+| `auth/password/reset/confirm/index.html` | A página que recebe o link de redefinição de senha |
+| `tools/` | O servidor local e o script de verificação |
+| `tests/` | Os testes de recuperação e redefinição de senha |
+
+## Sobre a API e os dados
+
+Usei a API da Theka para o login, o cadastro e as funções de recuperação e redefinição de senha, o acervo também está integrado à API, permitindo buscar, adicionar, editar e excluir livros
+
+
+## Como conferir o código
+
+Com o Node.js instalado, pode usar o comando no projeto para verificar a sintaxe do JavaScript e os caminhos dos arquivos:
+
+```bash
+npm run check
+```
+
+
+## O que falta fazer
+
+- Integrar os livros à API, incluindo a busca, o cadastro, a edição e a exclusão
+- Completar o controle da sessão, incluindo a renovação do token e a proteção das páginas que precisarem de login
+- Testar a recuperação de senha com um e-mail real e o endereço em que o site será usado
+- Revisar as telas em diferentes tamanhos e conferir os fluxos antes da entrega
+
+## Referências
+
+- [Enunciado do desafio](https://drive.google.com/file/d/1nis6gGaHB-C3w1JW1_NPO-kLJrGdNfyz/view)
+- [Trilha de JavaScript da EJECT](https://drive.google.com/file/d/1OUSBoHxR0oXOt0YmGcRA2VjRZMeAB8IF/view)
+- [Telas do projeto no Figma](https://www.figma.com/design/EF8SxbkHZAVwgcedfGkGJI/Trainee-26.2---Front-end?node-id=4070-1414)
+- [Documentação da API](https://thekapitrainee.pythonanywhere.com/docs/)
+- [Repositório da API](https://github.com/CarlosG18/theka_API)
+- [Modelo de projeto JavaScript da EJECT](https://github.com/EJECT4UFRN/MODELO_Trainee_JavaScript)
+
+## Desenvolvedor
+
+[Paulo Gustavo](https://github.com/paulogustavo-beep) — Trainee EJECT 2026.2.

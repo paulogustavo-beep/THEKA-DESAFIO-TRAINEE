@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
     <title>Definir nova senha | Theka</title>
     <link rel="stylesheet" href="../styles/login.css">
     <script src="../scripts/login.js" defer></script>
@@ -35,10 +36,10 @@
         <section class="auth-panel" aria-labelledby="titulo-pagina">
             <h1 class="auth-title" id="titulo-pagina">Recuperar senha</h1>
 
-            <form class="auth-form" data-formulario="redefinicao">
+            <form class="auth-form" data-formulario="redefinicao" method="post">
                 <div class="auth-field">
                     <label class="auth-label" for="senha">Nova senha</label>
-                    <input class="auth-input" id="senha" name="senha" type="password" placeholder="******" autocomplete="new-password" required>
+                    <input class="auth-input" id="senha" name="senha" type="password" placeholder="******" autocomplete="new-password" minlength="8" required>
                 </div>
 
                 <div class="auth-field">
