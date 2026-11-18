@@ -27,24 +27,6 @@ O Figma é a referência do layout, e o GitHub é usado para guardar o código e
 
 ## Como abrir o projeto
 
-É preciso ter o **Node.js** instalado, com o npm
-
-Para baixar pelo Git:
-
-```bash
-git clone https://github.com/paulogustavo-beep/THEKA-DESAFIO-TRAINEE.git
-cd THEKA-DESAFIO-TRAINEE
-```
-
-Depois de baixar o projeto, pode abrir a pasta no VSCode e usar o terminal
-O terminal precisa estar na pasta onde está o arquivo `package.json`
-
-Depois, execute:
-
-```bash
-npm run dev
-```
-
 Abra a pasta do projeto no VS Code e instale a extensão Live Server, de Ritwick Dey.
 
 Depois, clique com o botão direito no arquivo `src/pages/login.html` da pasta principal, e escolha **Open with Live Server**, o projeto vai abrir no navegador, na página do acervo.
