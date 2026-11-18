@@ -293,3 +293,310 @@ export async function redefinirSenhaNaApi({ uid, token, senha, confirmacao }) {
         new_password_confirm: confirmacao
     }, true);
 }
+
+// Acervo: as alterações só são confirmadas depois da resposta do servidor.
+function erroAcervo(mensagem, codigo = '') {
+    const falha = new Error(mensagem);
+    falha.codigo = codigo;
+    return falha;
+}
+
+async function pedidoAcervo(
+    caminho,
+    { metodo = 'GET', corpo, signal, status = 200 } = {}
+) {
+    const controle = new AbortController();
+    const cancelar = () => controle.abort();
+
+    if (signal?.aborted) cancelar();
+    signal?.addEventListener('abort', cancelar, { once: true });
+
+    const temporizador = setTimeout(cancelar, TEMPO_LIMITE);
+    const alteracao = metodo !== 'GET';
+    const incerto = 'Não foi possível confirmar a alteração. Confira o acervo antes de tentar novamente.';
+    const headers = { Accept: 'application/json' };
+    let acesso = '';
+
+    // A consulta é pública. Nas alterações, usamos a sessão quando disponível.
+    if (alteracao) {
+        try {
+            acesso = sessionStorage.getItem('theka:auth:access') || '';
+        } catch {
+            // Sem sessão.
+        }
+
+        if (acesso) headers.Authorization = `Bearer ${acesso}`;
+    }
+
+    try {
+        const resposta = await fetch(`${API_URL}${caminho}`, {
+            method: metodo,
+            headers,
+            body: corpo,
+            signal: controle.signal,
+            credentials: 'omit',
+            cache: 'no-store',
+            referrerPolicy: 'no-referrer'
+        });
+
+        if (resposta.status === 401) {
+            try {
+                if (sessionStorage.getItem('theka:auth:access') === acesso) {
+                    sessionStorage.removeItem('theka:auth:access');
+                }
+            } catch {
+                // Sem sessão local disponível.
+            }
+
+            throw erroAcervo(
+                'Entre na sua conta novamente para alterar o acervo.',
+                'sessao_expirada'
+            );
+        }
+
+        if (resposta.status === 403) {
+            throw erroAcervo(
+                'Sua conta não tem permissão para fazer essa alteração.',
+                'sem_permissao'
+            );
+        }
+
+        if (resposta.status === 404) {
+            throw erroAcervo(
+                'Este material não está mais disponível. Atualize o acervo.',
+                'nao_encontrado'
+            );
+        }
+
+        if (resposta.status === 429) {
+            throw erroAcervo(
+                'Muitas solicitações. Aguarde um pouco e tente novamente.'
+            );
+        }
+
+        if (resposta.status >= 500) {
+            throw erroAcervo(
+                alteracao
+                    ? incerto
+                    : 'O acervo está indisponível. Tente novamente em instantes.',
+                alteracao ? 'resultado_incerto' : ''
+            );
+        }
+
+        if (metodo === 'DELETE' && resposta.status === 204) return;
+
+        let dados;
+
+        try {
+            dados = await resposta.json();
+        } catch (falha) {
+            if (controle.signal.aborted) throw falha;
+
+            throw erroAcervo(
+                alteracao ? incerto : 'Não foi possível ler os dados do acervo.',
+                alteracao ? 'resultado_incerto' : ''
+            );
+        }
+
+        if (!resposta.ok) {
+            const rotulos = {
+                titulo: 'Título',
+                autor: 'Autor',
+                isbn: 'ISBN',
+                numero_paginas: 'Páginas',
+                ano_publicacao: 'Ano',
+                editora: 'Editora',
+                genero: 'Gênero',
+                capa: 'Capa',
+                resumo: 'Resumo',
+                detail: '',
+                non_field_errors: ''
+            };
+
+            const mensagens = dados && typeof dados === 'object' && !Array.isArray(dados)
+                ? Object.entries(dados).flatMap(([campo, valor]) =>
+                    Object.hasOwn(rotulos, campo)
+                        ? (Array.isArray(valor) ? valor : [valor])
+                            .filter(texto => typeof texto === 'string')
+                            .map(texto =>
+                                rotulos[campo] ? `${rotulos[campo]}: ${texto}` : texto
+                            )
+                        : []
+                )
+                : [];
+
+            throw erroAcervo(
+                mensagens.join(' ') ||
+                'Não foi possível concluir. Confira os dados e tente novamente.'
+            );
+        }
+
+        if (resposta.status !== status) {
+            throw erroAcervo(
+                alteracao ? incerto : 'A resposta do acervo não foi reconhecida.',
+                alteracao ? 'resultado_incerto' : ''
+            );
+        }
+
+        return dados;
+    } catch (falha) {
+        if (signal?.aborted) {
+            throw new DOMException('Consulta cancelada.', 'AbortError');
+        }
+
+        if (controle.signal.aborted || falha instanceof TypeError) {
+            throw erroAcervo(
+                alteracao
+                    ? incerto
+                    : 'Não foi possível carregar o acervo. Confira sua conexão e tente novamente.',
+                alteracao ? 'resultado_incerto' : ''
+            );
+        }
+
+        throw falha;
+    } finally {
+        clearTimeout(temporizador);
+        signal?.removeEventListener('abort', cancelar);
+    }
+}
+
+function livroRecebidoValido(livro) {
+    return livro &&
+        Number.isSafeInteger(livro.id) &&
+        livro.id > 0 &&
+        typeof livro.titulo === 'string' &&
+        Boolean(livro.titulo.trim());
+}
+
+function conferirLista(dados, validar = livroRecebidoValido) {
+    const lista = Array.isArray(dados) ? dados : dados?.results;
+
+    if (!Array.isArray(lista) || !lista.every(validar)) {
+        throw erroAcervo(
+            'A resposta do acervo está incompleta. Tente carregar novamente.'
+        );
+    }
+
+    return lista;
+}
+
+export async function listarLivrosNaApi(
+    { busca = '', genero = '', editora = '', pagina = 1, porPagina = 15 } = {},
+    signal
+) {
+    const parametros = new URLSearchParams({
+        page: String(pagina),
+        page_size: String(porPagina)
+    });
+
+    if (busca.trim()) parametros.set('search', busca.trim());
+    if (genero) parametros.set('genero', String(genero));
+    if (editora) parametros.set('editora', String(editora));
+
+    const dados = await pedidoAcervo(`/livros/?${parametros}`, { signal });
+    const livros = conferirLista(dados);
+
+    if (!Number.isSafeInteger(dados.count) || dados.count < livros.length) {
+        throw erroAcervo('Não foi possível conferir a quantidade de livros.');
+    }
+
+    return { livros, total: dados.count };
+}
+
+export async function listarNovidadesNaApi(signal) {
+    return conferirLista(
+        await pedidoAcervo('/livros/novidades/', { signal })
+    );
+}
+
+export async function listarOpcoesDoAcervoNaApi() {
+    const validar = item =>
+        item &&
+        Number.isSafeInteger(item.id) &&
+        item.id > 0 &&
+        typeof item.nome === 'string';
+
+    const [generos, editoras] = await Promise.all([
+        pedidoAcervo('/generos/'),
+        pedidoAcervo('/editoras/')
+    ]);
+
+    return {
+        generos: conferirLista(generos, validar),
+        editoras: conferirLista(editoras, validar)
+    };
+}
+
+function conferirId(id) {
+    if (!Number.isSafeInteger(id) || id <= 0) {
+        throw erroAcervo('Material inválido. Atualize o acervo.');
+    }
+}
+
+export async function buscarLivroNaApi(id, signal) {
+    conferirId(id);
+
+    const livro = await pedidoAcervo(`/livros/${id}/`, { signal });
+
+    if (!livroRecebidoValido(livro) || livro.id !== id) {
+        throw erroAcervo('Não foi possível conferir os dados deste material.');
+    }
+
+    return livro;
+}
+
+export async function salvarLivroNaApi(campos, arquivoCapa = null, id = null) {
+    if (id !== null) conferirId(id);
+
+    const corpo = new FormData();
+
+    for (const campo of [
+        'titulo',
+        'autor',
+        'isbn',
+        'resumo',
+        'editora',
+        'genero',
+        'numero_paginas',
+        'ano_publicacao'
+    ]) {
+        if (campos[campo] !== undefined) {
+            corpo.append(campo, String(campos[campo] ?? ''));
+        }
+    }
+
+    // Sem uma nova imagem, o PATCH conserva a capa que já está no servidor.
+    if (arquivoCapa) {
+        corpo.append('capa', arquivoCapa, arquivoCapa.name);
+    }
+
+    const livro = await pedidoAcervo(
+        id === null ? '/livros/' : `/livros/${id}/`,
+        {
+            metodo: id === null ? 'POST' : 'PATCH',
+            corpo,
+            status: id === null ? 201 : 200
+        }
+    );
+
+    if (
+        !livroRecebidoValido(livro) ||
+        (id !== null && livro.id !== id)
+    ) {
+        throw erroAcervo(
+            'Não foi possível confirmar a alteração. Confira o acervo antes de tentar novamente.',
+            'resultado_incerto'
+        );
+    }
+
+    return livro;
+}
+
+export async function excluirLivroNaApi(id) {
+    conferirId(id);
+
+    await pedidoAcervo(`/livros/${id}/`, {
+        metodo: 'DELETE',
+        status: 204
+    });
+}

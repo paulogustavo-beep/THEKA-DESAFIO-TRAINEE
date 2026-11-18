@@ -10,163 +10,587 @@
 <body class="acervo-page">
     <svg class="simbolos" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
-            <symbol id="icone-busca" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></symbol>
-            <symbol id="icone-usuario" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="9" r="3"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/></symbol>
-            <symbol id="icone-seta" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M7 17 17 7M7 7h10v10"/></symbol>
-            <symbol id="icone-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
-            <symbol id="icone-celular" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M10 18h4"/></symbol>
-            <symbol id="icone-globo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><path d="M2 12h20"/></symbol>
-            <symbol id="icone-localizacao" viewBox="0 0 24 24"><path d="M18 8c0 4.5-6 9-6 9S6 12.5 6 8a6 6 0 0 1 12 0Z"/><circle cx="12" cy="8" r="2"/><path d="M6 16c-2 1-3 2-3 3 0 2 4 3 9 3s9-1 9-3c0-1-1-2-3-3"/></symbol>
-            <symbol id="icone-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/></symbol>
-            <symbol id="icone-tiktok" viewBox="0 0 24 24"><path d="M14 3v12.5a4.5 4.5 0 1 1-4-4.47M14 3c.5 4 3 6 7 6"/></symbol>
-            <symbol id="icone-x" viewBox="0 0 24 24"><path d="M4 3h5l11 18h-5ZM20 3l-6.4 7.5M4 21l6.4-7.5"/></symbol>
-            <symbol id="icone-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="M12 11v6" stroke="var(--rosa)"/><circle cx="12" cy="7" r="1" fill="var(--rosa)" stroke="none"/></symbol>
-            <symbol id="icone-ajuda" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/><path d="M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5" stroke="var(--rosa)"/><circle cx="12" cy="17" r="1" fill="var(--rosa)" stroke="none"/></symbol>
+            <symbol id="icone-busca" viewBox="0 0 24 24">
+                <circle cx="10" cy="10" r="7"/>
+                <path d="m15 15 6 6"/>
+            </symbol>
+            <symbol id="icone-usuario" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9"/>
+                <circle cx="12" cy="9" r="3"/>
+                <path d="M6.5 19a5.5 5.5 0 0 1 11 0"/>
+            </symbol>
+            <symbol id="icone-seta" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M7 17 17 7M7 7h10v10"/>
+            </symbol>
+            <symbol id="icone-chevron" viewBox="0 0 24 24">
+                <path d="m6 9 6 6 6-6"/>
+            </symbol>
+            <symbol id="icone-celular" viewBox="0 0 24 24">
+                <rect x="6" y="2" width="12" height="20" rx="2"/>
+                <path d="M10 18h4"/>
+            </symbol>
+            <symbol id="icone-globo" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                <path d="M2 12h20"/>
+            </symbol>
+            <symbol id="icone-localizacao" viewBox="0 0 24 24">
+                <path d="M18 8c0 4.5-6 9-6 9S6 12.5 6 8a6 6 0 0 1 12 0Z"/>
+                <circle cx="12" cy="8" r="2"/>
+                <path d="M6 16c-2 1-3 2-3 3 0 2 4 3 9 3s9-1 9-3c0-1-1-2-3-3"/>
+            </symbol>
+            <symbol id="icone-instagram" viewBox="0 0 24 24">
+                <rect x="3" y="3" width="18" height="18" rx="5"/>
+                <circle cx="12" cy="12" r="4"/>
+                <circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>
+            </symbol>
+            <symbol id="icone-tiktok" viewBox="0 0 24 24">
+                <path d="M14 3v12.5a4.5 4.5 0 1 1-4-4.47M14 3c.5 4 3 6 7 6"/>
+            </symbol>
+            <symbol id="icone-x" viewBox="0 0 24 24">
+                <path d="M4 3h5l11 18h-5ZM20 3l-6.4 7.5M4 21l6.4-7.5"/>
+            </symbol>
+            <symbol id="icone-info" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/>
+                <path d="M12 11v6" stroke="var(--rosa)"/>
+                <circle cx="12" cy="7" r="1" fill="var(--rosa)" stroke="none"/>
+            </symbol>
+            <symbol id="icone-ajuda" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" fill="currentColor" stroke="none"/>
+                <path d="M9 8a3 3 0 0 1 6 0c0 2-3 2-3 5" stroke="var(--rosa)"/>
+                <circle cx="12" cy="17" r="1" fill="var(--rosa)" stroke="none"/>
+            </symbol>
         </defs>
     </svg>
+
     <a class="pular" href="#catalogo">Ir para o catálogo</a>
+
     <header class="cabecalho" id="topo">
         <a class="marca-nav" href="acervo.html" aria-label="Theka — início">
             <img src="../assets/acervo/simbolo.svg" alt="" width="54" height="54">
         </a>
-        <button class="nav-abrir" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir navegação"><img src="../assets/acervo/simbolo.svg" alt="" width="54" height="54"></button>
-        <a class="marca-mobile" href="acervo.html" aria-label="Theka — início"><img src="../assets/acervo/logo-nav.svg" alt="Theka" width="145" height="40"></a>
+
+        <button
+            class="nav-abrir"
+            type="button"
+            aria-expanded="false"
+            aria-controls="menu-principal"
+            aria-label="Abrir navegação"
+        >
+            <img src="../assets/acervo/simbolo.svg" alt="" width="54" height="54">
+        </button>
+
+        <a class="marca-mobile" href="acervo.html" aria-label="Theka — início">
+            <img src="../assets/acervo/logo-nav.svg" alt="Theka" width="145" height="40">
+        </a>
+
         <nav class="menu" id="menu-principal" aria-label="Navegação principal">
             <a href="#catalogo" aria-current="page">Acervo</a>
             <a href="sobre-nos.html">Sobre nós</a>
-            <a class="acesso" href="login.html" aria-label="Ir para o login" title="Ir para o login">
-                <svg class="icone" aria-hidden="true"><use href="#icone-usuario"/></svg>
+
+            <a
+                class="acesso"
+                href="login.html"
+                aria-label="Ir para o login"
+                title="Ir para o login"
+            >
+                <svg class="icone" aria-hidden="true">
+                    <use href="#icone-usuario"/>
+                </svg>
             </a>
         </nav>
     </header>
+
     <main class="conteudo">
         <section class="destaques" aria-labelledby="titulo-destaques">
             <div class="destaque-texto">
-                <h1 id="titulo-destaques"><span class="titulo-desktop">Novidades<br>da semana</span><span class="titulo-mobile">Novidade da semana</span></h1>
+                <h1 id="titulo-destaques">
+                    <span class="titulo-desktop">Novidades<br>da semana</span>
+                    <span class="titulo-mobile">Novidade da semana</span>
+                </h1>
+
                 <div class="destaque-descricao" aria-live="polite">
-                    <p class="destaque-titulo" id="destaque-titulo"></p>
+                    <p class="destaque-titulo" id="destaque-titulo">
+                        Carregando novidades...
+                    </p>
+
                     <p class="destaque-autor" id="destaque-autor"></p>
+
+                    <button
+                        class="link-botao"
+                        id="recarregar-novidades"
+                        type="button"
+                        hidden
+                    >
+                        Tentar novamente
+                    </button>
                 </div>
             </div>
-            <div class="destaque-livros" id="destaque-livros" role="group" aria-label="Livros em destaque"></div>
+
+            <div
+                class="destaque-livros"
+                id="destaque-livros"
+                role="group"
+                aria-label="Livros em destaque"
+            ></div>
         </section>
+
         <section class="catalogo" id="catalogo" aria-labelledby="titulo-catalogo">
             <h2 id="titulo-catalogo">Veja nosso catálogo</h2>
+
             <form class="filtros" id="form-busca" role="search">
                 <label class="busca">
                     <span class="sr-only">Pesquisar por título ou autor</span>
-                    <input id="busca" type="search" placeholder="Fazer busca" autocomplete="off" maxlength="180">
+
+                    <input
+                        id="busca"
+                        type="search"
+                        placeholder="Fazer busca"
+                        autocomplete="off"
+                        maxlength="180"
+                    >
                 </label>
-                <button class="botao buscar-submit" type="submit" aria-label="Buscar livros"><span>Buscar</span> <svg class="icone" aria-hidden="true"><use href="#icone-busca"/></svg></button>
+
+                <button class="botao buscar-submit" type="submit">
+                    <span>Buscar</span>
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-busca"/>
+                    </svg>
+                </button>
+
                 <div class="filtros-opcoes" id="filtros-opcoes">
                     <h3>Filtros</h3>
-                    <label class="sr-only" for="categoria">Gênero</label><select id="categoria" name="categoria"><option value="">Gênero</option></select>
-                    <label class="sr-only" for="editora">Editora</label><select id="editora" name="editora"><option value="">Editora</option></select>
-                    <button class="botao aplicar-filtros" type="submit">Aplicar</button>
+
+                    <label class="sr-only" for="categoria">Gênero</label>
+                    <select id="categoria" name="categoria" disabled>
+                        <option value="">Gênero</option>
+                    </select>
+
+                    <label class="sr-only" for="editora">Editora</label>
+                    <select id="editora" name="editora" disabled>
+                        <option value="">Editora</option>
+                    </select>
+
+                    <button class="botao aplicar-filtros" type="submit">
+                        Aplicar
+                    </button>
                 </div>
-                <button class="abrir-filtros botao" id="abrir-filtros" type="button" aria-label="Abrir filtros" aria-controls="filtros-opcoes" aria-expanded="false"><svg class="icone" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18l-7 8v7l-4-2v-5Z"/></svg></button>
+
+                <button
+                    class="abrir-filtros botao"
+                    id="abrir-filtros"
+                    type="button"
+                    aria-label="Abrir filtros"
+                    aria-controls="filtros-opcoes"
+                    aria-expanded="false"
+                >
+                    <svg class="icone" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 5h18l-7 8v7l-4-2v-5Z"/>
+                    </svg>
+                </button>
             </form>
-            <div class="resultado-barra">
-                <p class="sr-only" id="resultados" role="status" aria-live="polite"></p>
-                <button class="link-botao" id="limpar-busca" type="button" hidden>Limpar busca</button>
+
+            <div class="estado-acervo" id="estado-opcoes" hidden>
+                <p id="mensagem-opcoes" role="alert"></p>
+
+                <button
+                    class="link-botao"
+                    id="recarregar-opcoes"
+                    type="button"
+                >
+                    Carregar gêneros e editoras
+                </button>
             </div>
+
+            <div class="resultado-barra">
+                <p
+                    class="sr-only"
+                    id="resultados"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <button class="link-botao" id="limpar-busca" type="button" hidden>
+                    Limpar busca
+                </button>
+            </div>
+
+            <div class="estado-acervo" id="estado-acervo">
+                <p id="mensagem-acervo" role="status">Carregando livros...</p>
+
+                <button
+                    class="botao botao-contorno"
+                    id="recarregar-acervo"
+                    type="button"
+                    hidden
+                >
+                    Tentar novamente
+                </button>
+            </div>
+
             <div class="catalogo-grade">
                 <div class="grade-livros" id="grade-livros"></div>
-                <button class="adicionar-livro" id="adicionar" type="button" aria-label="Adicionar material" title="Adicionar material"><span aria-hidden="true">+</span></button>
+
+                <button
+                    class="adicionar-livro"
+                    id="adicionar"
+                    type="button"
+                    aria-label="Adicionar material"
+                    title="Adicionar material"
+                    disabled
+                >
+                    <span aria-hidden="true">+</span>
+                </button>
             </div>
+
             <div class="vazio" id="vazio" hidden>
-                <h3>Nenhum livro encontrado</h3>
-                <p>Tente outro título ou autor.</p>
-                <button class="botao botao-contorno" id="recomecar-busca" type="button">Limpar busca</button>
+                <h3 id="vazio-titulo">Nenhum livro encontrado</h3>
+                <p id="vazio-texto">Tente outro título, autor ou filtro.</p>
+
+                <button
+                    class="botao botao-contorno"
+                    id="recomecar-busca"
+                    type="button"
+                >
+                    Limpar busca
+                </button>
             </div>
-            <nav class="paginacao" id="paginacao" aria-label="Páginas do catálogo"></nav>
-            <p class="aviso-local sr-only" id="aviso-local">Catálogo demonstrativo. As alterações ficam somente neste navegador.</p>
+
+            <nav
+                class="paginacao"
+                id="paginacao"
+                aria-label="Páginas do catálogo"
+            ></nav>
         </section>
     </main>
+
     <footer class="rodape" id="sobre">
         <div class="rodape-conteudo">
             <div class="rodape-marca">
                 <span class="rodape-logo" role="img" aria-label="Theka"></span>
                 <p>Aventuras literárias</p>
             </div>
+
             <section aria-labelledby="titulo-contato">
                 <h2 id="titulo-contato">Contato</h2>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-celular"/></svg><span>(84) 9 9999-2222</span></p>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-globo"/></svg><span>www.theka.com.br</span></p>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-localizacao"/></svg><span>Natal, RN</span></p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-celular"/>
+                    </svg>
+                    <span>(84) 9 9999-2222</span>
+                </p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-globo"/>
+                    </svg>
+                    <span>www.theka.com.br</span>
+                </p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-localizacao"/>
+                    </svg>
+                    <span>Natal, RN</span>
+                </p>
             </section>
+
             <section aria-labelledby="titulo-redes">
                 <h2 id="titulo-redes">Redes sociais</h2>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-instagram"/></svg><span>@theka.biblioteca</span></p>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-tiktok"/></svg><span>@theka.biblioteca</span></p>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-x"/></svg><span>@theka.biblioteca</span></p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-instagram"/>
+                    </svg>
+                    <span>@theka.biblioteca</span>
+                </p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-tiktok"/>
+                    </svg>
+                    <span>@theka.biblioteca</span>
+                </p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-x"/>
+                    </svg>
+                    <span>@theka.biblioteca</span>
+                </p>
             </section>
+
             <section aria-labelledby="titulo-ajuda">
                 <h2 id="titulo-ajuda">Ajuda</h2>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-info"/></svg><span>Central de ajuda</span></p>
-                <p class="rodape-linha"><svg class="icone" aria-hidden="true"><use href="#icone-ajuda"/></svg><span>FAQ</span></p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-info"/>
+                    </svg>
+                    <span>Central de ajuda</span>
+                </p>
+
+                <p class="rodape-linha">
+                    <svg class="icone" aria-hidden="true">
+                        <use href="#icone-ajuda"/>
+                    </svg>
+                    <span>FAQ</span>
+                </p>
             </section>
         </div>
+
         <p class="rodape-creditos">Mockup desenvolvido por EJECT</p>
     </footer>
 
-    <dialog class="modal modal-detalhe" id="modal-detalhe" aria-labelledby="detalhe-titulo">
-        <button class="fechar" type="button" data-fechar aria-label="Fechar informações">×</button>
+    <dialog
+        class="modal modal-detalhe"
+        id="modal-detalhe"
+        aria-labelledby="detalhe-titulo"
+    >
+        <button
+            class="fechar"
+            type="button"
+            data-fechar
+            aria-label="Fechar informações"
+        >×</button>
+
         <div id="detalhe-capa" class="detalhe-capa"></div>
+
         <div class="detalhe-conteudo">
-            <h2 id="detalhe-titulo"></h2><p id="detalhe-autor" class="detalhe-autor"></p>
+            <h2 id="detalhe-titulo"></h2>
+            <p id="detalhe-autor" class="detalhe-autor"></p>
             <p id="detalhe-resumo" class="detalhe-resumo"></p>
-            <p id="detalhe-paginas" class="detalhe-paginas"></p><p id="detalhe-editora" class="detalhe-editora"></p>
-            <button class="botao" id="editar-livro" type="button">Editar</button>
+            <p id="detalhe-paginas" class="detalhe-paginas"></p>
+            <p id="detalhe-editora" class="detalhe-editora"></p>
+
+            <p
+                id="detalhe-estado"
+                class="erro-formulario"
+                role="alert"
+                hidden
+            ></p>
+
+            <button class="botao" id="editar-livro" type="button">
+                Editar
+            </button>
         </div>
     </dialog>
-    <dialog class="modal modal-editor" id="modal-editor" aria-labelledby="editor-titulo">
-        <button class="fechar" type="button" data-fechar aria-label="Fechar formulário">×</button>
-        <div class="editor-nav"><button type="button" class="editor-voltar" data-fechar aria-label="Voltar ao acervo"><img src="../assets/acervo/simbolo.svg" alt="" width="54" height="54"></button><span><img src="../assets/acervo/logo-nav.svg" alt="Theka" width="145" height="40"></span></div>
+
+    <dialog
+        class="modal modal-editor"
+        id="modal-editor"
+        aria-labelledby="editor-titulo"
+    >
+        <button
+            class="fechar"
+            type="button"
+            data-fechar
+            aria-label="Fechar formulário"
+        >×</button>
+
+        <div class="editor-nav">
+            <button
+                type="button"
+                class="editor-voltar"
+                data-fechar
+                aria-label="Voltar ao acervo"
+            >
+                <img
+                    src="../assets/acervo/simbolo.svg"
+                    alt=""
+                    width="54"
+                    height="54"
+                >
+            </button>
+
+            <span>
+                <img
+                    src="../assets/acervo/logo-nav.svg"
+                    alt="Theka"
+                    width="145"
+                    height="40"
+                >
+            </span>
+        </div>
+
         <h2 id="editor-titulo">Adicionar material ao catálogo</h2>
-        <form id="form-livro">
+
+        <form id="form-livro" method="post">
             <div class="editor-grade">
                 <div class="editor-capa">
                     <div id="capa-previa"></div>
-                    <label class="botao botao-contorno arquivo-botao" for="arquivo-capa">Adicionar imagem</label>
-                    <input class="arquivo-input" id="arquivo-capa" type="file" accept="image/png,image/jpeg,image/webp" aria-describedby="erro-formulario">
+
+                    <label
+                        class="botao botao-contorno arquivo-botao"
+                        for="arquivo-capa"
+                    >
+                        Adicionar imagem
+                    </label>
+
+                    <input
+                        class="arquivo-input"
+                        id="arquivo-capa"
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp"
+                        aria-describedby="erro-formulario"
+                    >
                 </div>
+
                 <div class="editor-campos">
-                    <label class="campo campo-titulo">Título do material:
-                        <input id="livro-titulo" name="titulo" required maxlength="120" placeholder="Título do material">
+                    <label class="campo campo-titulo">
+                        Título do material:
+                        <input
+                            id="livro-titulo"
+                            name="titulo"
+                            required
+                            maxlength="255"
+                            placeholder="Título do material"
+                        >
                     </label>
-                    <label class="campo campo-paginas">Número de páginas
-                        <input id="livro-paginas" name="paginas" type="number" min="1" max="50000" step="1" required placeholder="Número de páginas">
+
+                    <label class="campo campo-paginas">
+                        Número de páginas
+                        <input
+                            id="livro-paginas"
+                            name="paginas"
+                            type="number"
+                            min="1"
+                            step="1"
+                            placeholder="Número de páginas"
+                        >
                     </label>
-                    <label class="campo campo-isbn">ISBN
-                        <input id="livro-isbn" name="isbn" maxlength="25" placeholder="ISBN">
+
+                    <label class="campo campo-isbn">
+                        ISBN
+                        <input
+                            id="livro-isbn"
+                            name="isbn"
+                            required
+                            maxlength="17"
+                            placeholder="ISBN"
+                        >
                     </label>
-                    <label class="campo campo-autor">Autor:
-                        <input id="livro-autor" name="autor" required maxlength="120" placeholder="Nome do autor">
+
+                    <label class="campo campo-autor">
+                        Autor:
+                        <input
+                            id="livro-autor"
+                            name="autor"
+                            required
+                            maxlength="255"
+                            placeholder="Nome do autor"
+                        >
                     </label>
-                    <label class="campo campo-ano">Ano de publicação
-                        <input id="livro-ano" name="ano" type="number" min="1" max="2100" step="1" required placeholder="Ano de publicação">
+
+                    <label class="campo campo-ano">
+                        Ano de publicação
+                        <input
+                            id="livro-ano"
+                            name="ano"
+                            type="number"
+                            min="0"
+                            step="1"
+                            placeholder="Ano de publicação"
+                        >
                     </label>
-                    <label class="campo campo-editora">Editora
-                        <input id="livro-editora" name="editora" required maxlength="80" placeholder="Editora">
+
+                    <label class="campo campo-editora">
+                        Editora
+                        <select id="livro-editora" name="editora" required>
+                            <option value="">Selecione a editora</option>
+                        </select>
                     </label>
-                    <label class="campo campo-categoria">Gênero:
-                        <input id="livro-categoria" name="categoria" required maxlength="80" placeholder="Gênero do livro">
+
+                    <label class="campo campo-categoria">
+                        Gênero:
+                        <select id="livro-categoria" name="categoria" required>
+                            <option value="">Selecione o gênero</option>
+                        </select>
                     </label>
-                    <label class="campo campo-resumo">Resumo do material:
-                        <textarea id="livro-resumo" name="resumo" rows="4" required maxlength="2000" placeholder="Resumo do material"></textarea>
+
+                    <label class="campo campo-resumo">
+                        Resumo do material:
+                        <textarea
+                            id="livro-resumo"
+                            name="resumo"
+                            rows="4"
+                            required
+                            placeholder="Resumo do material"
+                        ></textarea>
                     </label>
+
                     <div class="editor-acoes">
-                        <button class="botao botao-contorno excluir-livro" id="excluir-livro" type="button" hidden>Excluir</button>
-                        <div class="acoes"><button class="botao botao-contorno" id="cancelar-editor" type="button">Cancelar</button><button class="botao" id="salvar-livro" type="submit">Salvar</button></div>
+                        <button
+                            class="botao botao-contorno excluir-livro"
+                            id="excluir-livro"
+                            type="button"
+                            hidden
+                        >
+                            Excluir
+                        </button>
+
+                        <div class="acoes">
+                            <button
+                                class="botao botao-contorno"
+                                id="cancelar-editor"
+                                type="button"
+                            >
+                                Cancelar
+                            </button>
+
+                            <button
+                                class="botao"
+                                id="salvar-livro"
+                                type="submit"
+                            >
+                                Salvar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <p class="erro-formulario" id="erro-formulario" role="alert" hidden></p>
+
+            <p
+                class="erro-formulario"
+                id="erro-formulario"
+                role="alert"
+                hidden
+            ></p>
+
+            <a
+                class="link-botao"
+                id="entrar-editor"
+                href="login.html"
+                hidden
+            >
+                Ir para o login
+            </a>
+
+            <button
+                class="link-botao"
+                id="conferir-acervo"
+                type="button"
+                hidden
+            >
+                Conferir acervo
+            </button>
         </form>
     </dialog>
 
-    <div class="notificacao" id="notificacao" role="status" aria-live="polite" hidden></div>
-    <noscript><p class="sem-js">Ative o JavaScript para pesquisar e gerenciar os livros.</p></noscript>
+    <div
+        class="notificacao"
+        id="notificacao"
+        role="status"
+        aria-live="polite"
+        hidden
+    ></div>
+
+    <noscript>
+        <p class="sem-js">
+            Ative o JavaScript para pesquisar e gerenciar os livros.
+        </p>
+    </noscript>
 </body>
 </html>
