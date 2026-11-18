@@ -63,13 +63,8 @@ Com o Node.js instalado, pode usar o comando no projeto para verificar a sintaxe
 npm run check
 ```
 
-
 ## O que falta fazer
 
-- Integrar os livros à API, incluindo a busca, o cadastro, a edição e a exclusão
-- Completar o controle da sessão, incluindo a renovação do token e a proteção das páginas que precisarem de login
-- Testar a recuperação de senha com um e-mail real e o endereço em que o site será usado
-- Revisar as telas em diferentes tamanhos e conferir os fluxos antes da entrega
 
 ## Referências
 
