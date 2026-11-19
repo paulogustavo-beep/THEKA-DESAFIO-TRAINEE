@@ -70,43 +70,49 @@
             <section class="sobre-valores" aria-labelledby="valores-titulo">
                 <h2 id="valores-titulo">Nossos valores</h2>
                 <div class="sobre-valores-grade">
-                    <button class="sobre-valor sobre-valor-acesso" type="button" aria-pressed="false">
+                    <button class="sobre-valor sobre-valor-acesso" type="button" aria-expanded="false" aria-labelledby="valor-acesso-titulo" aria-controls="valor-acesso-descricao">
                         <img src="../assets/sobre/90e8d.svg" alt="">
-                        <span>Acesso para todos</span>
+                        <span class="sobre-valor-titulo" id="valor-acesso-titulo">Acesso para todos</span>
+                        <span class="sobre-valor-descricao" id="valor-acesso-descricao">Acreditamos que o conhecimento deve ser compartilhado. Nossa biblioteca é aberta e inclusiva, um espaço onde todos podem aprender, descobrir e se sentir bem-vindos.</span>
                     </button>
-                    <button class="sobre-valor sobre-valor-leitura" type="button" aria-pressed="false">
+                    <button class="sobre-valor sobre-valor-leitura" type="button" aria-expanded="false" aria-labelledby="valor-leitura-titulo" aria-controls="valor-leitura-descricao">
                         <img src="../assets/sobre/d2d9d.svg" alt="">
-                        <span>Amor pela leitura</span>
+                        <span class="sobre-valor-titulo" id="valor-leitura-titulo">Amor pela leitura</span>
+                        <span class="sobre-valor-descricao" id="valor-leitura-descricao">Mais do que livros, cultivamos experiências. Valorizamos a leitura como ferramenta de inspiração, crescimento e transformação.</span>
                     </button>
-                    <button class="sobre-valor sobre-valor-troca" type="button" aria-pressed="false">
+                    <button class="sobre-valor sobre-valor-troca" type="button" aria-expanded="false" aria-labelledby="valor-troca-titulo" aria-controls="valor-troca-descricao">
                         <img src="../assets/sobre/6a546.svg" alt="">
-                        <span>Comunidade e troca</span>
+                        <span class="sobre-valor-titulo" id="valor-troca-titulo">Comunidade e troca</span>
+                        <span class="sobre-valor-descricao" id="valor-troca-descricao">Somos mais que estantes: somos um ponto de encontro. Aqui, cada pessoa pode aprender, ensinar e construir junto uma rede de saberes e culturas.</span>
                     </button>
                 </div>
             </section>
             <section class="sobre-equipe" aria-labelledby="equipe-titulo">
                 <h2 id="equipe-titulo">Nossa equipe</h2>
                 <div class="sobre-equipe-grade">
-                    <button class="sobre-membro membro-maria" type="button" aria-pressed="false">
+                    <button class="sobre-membro membro-maria" type="button" aria-expanded="false" aria-labelledby="maria-nome" aria-controls="maria-cargo">
                         <span class="membro-fundo"></span>
                         <span class="membro-retrato"><img src="../assets/sobre/4e94f.png" alt="" width="1200" height="1475"></span>
-                        <span class="membro-nome">Maria Marta</span>
-                        <span class="membro-cargo">Bibliotecária</span>
+                        <span class="membro-nome" id="maria-nome">Maria Marta</span>
+                        <span class="membro-cargo" id="maria-cargo">Bibliotecária</span>
                     </button>
-                    <button class="sobre-membro membro-julia" type="button" aria-pressed="false">
+                    <button class="sobre-membro membro-julia" type="button" aria-expanded="false" aria-labelledby="julia-nome" aria-controls="julia-cargo">
                         <span class="membro-fundo"></span>
                         <span class="membro-retrato"><img src="../assets/sobre/84f53.png" alt="" width="1200" height="2140"></span>
-                        <span class="membro-nome">Júlia Maria</span>
+                        <span class="membro-nome" id="julia-nome">Júlia Maria</span>
+                        <span class="membro-cargo" id="julia-cargo">Bibliotecária</span>
                     </button>
-                    <button class="sobre-membro membro-jeniffer" type="button" aria-pressed="false">
+                    <button class="sobre-membro membro-jeniffer" type="button" aria-expanded="false" aria-labelledby="jeniffer-nome" aria-controls="jeniffer-cargo">
                         <span class="membro-fundo"></span>
                         <span class="membro-retrato"><img src="../assets/sobre/c04b1.png" alt="" width="1080" height="1080"></span>
-                        <span class="membro-nome">Jeniffer Oliveira</span>
+                        <span class="membro-nome" id="jeniffer-nome">Jeniffer Oliveira</span>
+                        <span class="membro-cargo" id="jeniffer-cargo">Bibliotecária</span>
                     </button>
-                    <button class="sobre-membro membro-josivaldo" type="button" aria-pressed="false">
+                    <button class="sobre-membro membro-josivaldo" type="button" aria-expanded="false" aria-labelledby="josivaldo-nome" aria-controls="josivaldo-cargo">
                         <span class="membro-fundo"></span>
                         <span class="membro-retrato"><img src="../assets/sobre/1f919.png" alt="" width="540" height="811"></span>
-                        <span class="membro-nome">Josivaldo Lopes</span>
+                        <span class="membro-nome" id="josivaldo-nome">Josivaldo Lopes</span>
+                        <span class="membro-cargo" id="josivaldo-cargo">Bibliotecário</span>
                     </button>
                 </div>
             </section>
@@ -156,7 +162,14 @@
         });
         document.querySelectorAll('.sobre-valor, .sobre-membro').forEach(function (cartao) {
             cartao.addEventListener('click', function () {
-                cartao.setAttribute('aria-pressed', String(cartao.getAttribute('aria-pressed') !== 'true'));
+                const aberto = cartao.getAttribute('aria-expanded') !== 'true';
+                cartao.setAttribute('aria-expanded', String(aberto));
+
+                if (aberto) {
+                    cartao.setAttribute('aria-describedby', cartao.getAttribute('aria-controls'));
+                } else {
+                    cartao.removeAttribute('aria-describedby');
+                }
             });
         });
     </script>

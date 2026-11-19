@@ -279,14 +279,6 @@ a {
     letter-spacing: -0.05em;
 }
 
-.auth-layout--login {
-    --acoes-intervalo: 24px;
-}
-
-.auth-layout--login .auth-actions {
-    justify-content: center;
-}
-
 .auth-layout--cadastro {
     --coluna: 62.625%;
     --form-margem: 14.715719%;

@@ -284,13 +284,10 @@ h1 {
     right: calc(12 * var(--u));
     width: calc(36 * var(--u));
     height: calc(36 * var(--u));
-    color: white;
-    filter: drop-shadow(0 1px 2px #0008);
-}
-
-.destaque-livro.ativo .destaque-abrir {
-    color: #333;
-    filter: none;
+    border-radius: 50%;
+    color: #393939;
+    background: white;
+    filter: drop-shadow(0 1px 2px #0004);
 }
 
 .catalogo {
@@ -1077,16 +1074,23 @@ h1 {
     }
 
     .editor-campos {
-        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 
-    .campo {
-        font-size: 14px;
+    .campo-titulo,
+    .campo-autor {
+        grid-column: 1 / -1;
     }
 
-    .campo input {
-        padding: 8px 10px;
+    .campo {
+        font-size: 16px;
+    }
+
+    .campo input,
+    .campo select {
+        height: 44px;
+        padding: 8px 12px;
     }
 }
 
