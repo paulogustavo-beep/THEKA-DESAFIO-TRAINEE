@@ -21,7 +21,7 @@ Estou aprendendo desenvolvimento web e usando esse projeto para colocar os estud
 
 Usei ***HTML** para montar as páginas, **CSS** para os estilos e **JavaScript** para as funcionalidades. No CSS, usei ****Flexbox**, Grid e media queries para organizar os elementos e adaptar as telas
 
-As requisições à API são feitas com `fetch`. Também usei `localStorage` para guardar as alterações dos livros no navegador e `sessionStorage` para guardar o token recebido no login
+As requisições à API são feitas com `fetch`. As alterações dos livros são salvas pela API, e usei `sessionStorage` para guardar o token recebido no login
 
 O Figma é a referência do layout, e o GitHub é usado para guardar o código e acompanhar as alterações, o projeto também tem um servidor local e comandos de verificação que usam Node.js
 
@@ -29,9 +29,9 @@ O Figma é a referência do layout, e o GitHub é usado para guardar o código e
 
 Abra a pasta do projeto no VS Code e instale a extensão Live Server, de Ritwick Dey.
 
-Depois, clique com o botão direito no arquivo `src/pages/login.html` da pasta principal, e escolha **Open with Live Server**, o projeto vai abrir no navegador, na página do acervo.
+Depois, clique com o botão direito no arquivo `index.html` da pasta principal, e escolha **Open with Live Server**, o projeto vai abrir no navegador, na página do acervo.
 
-Para abrir qualquer tela de login, faça o mesmo com os arquivos `src/pages/login.html`
+Para abrir a tela de login, faça o mesmo com o arquivo `src/pages/login.html`
 
 
 ## Como organizei os arquivos
@@ -63,7 +63,6 @@ Com o Node.js instalado, pode usar o comando no projeto para verificar a sintaxe
 npm run check
 ```
 
-## O que falta fazer
 
 
 ## Referências
